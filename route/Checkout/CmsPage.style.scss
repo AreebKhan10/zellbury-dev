@@ -1,0 +1,385 @@
+/**
+ * ScandiPWA - Progressive Web App for Magento
+ *
+ * Copyright © Scandiweb, Inc. All rights reserved.
+ * See LICENSE for license details.
+ *
+ * @license OSL-3.0 (Open Software License ("OSL") v. 3.0)
+ * @package scandipwa/base-theme
+ * @link https://github.com/scandipwa/base-theme
+ */
+
+.CmsPage {
+    &_isBreadcrumbsHidden {
+        margin-top: calc(var(--header-total-height) + 1rem);
+    }
+
+    &-Wrapper {
+        grid-template-columns: auto;
+        max-width: var(--content-wrapper-width);
+
+        padding: {
+            left: 1rem;
+            right: 1rem;
+        }
+
+        ;
+
+        margin: {
+            top: calc(var(--header-total-height) + 1rem);
+            bottom: var(--header-nav-height);
+            left: auto;
+            right: auto;
+        }
+
+        ;
+
+        @include after-mobile {
+            margin-top: 2rem;
+        }
+
+        &_page_width {
+            &_full {
+                max-width: 100%;
+
+                padding: {
+                    left: 0;
+                    right: 0;
+                }
+
+                ;
+            }
+        }
+    }
+
+    &-Heading {
+        margin-bottom: 1.5rem;
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &-SectionPlaceholder {
+        background-image: var(--placeholder-image);
+        background-size: var(--placeholder-size);
+        animation: var(--placeholder-animation);
+        margin: 0 0 10px;
+        padding-bottom: 30%;
+
+        @include mobile {
+            padding-bottom: 60%;
+        }
+
+        &:first-child {
+            padding-bottom: 40%;
+
+            @include mobile {
+                padding-bottom: 100%;
+            }
+        }
+    }
+
+    .TextPlaceholder {
+        margin-bottom: 1.8rem;
+        display: block;
+    }
+
+    h2,
+    h3 {
+        @include mobile {
+            font-size: 1rem;
+        }
+    }
+}
+
+.boxes-wrapper {
+    background: #fff;
+    padding: 10px 0px;
+}
+
+.boxes-wrapper .content-box-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 15px;
+    flex-wrap: wrap;
+}
+
+.boxes-wrapper .content-box-wrapper .content-box {
+    background: var(--primary-base-color);
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 0 10px;
+    text-align: center;
+    max-width: 76px;
+    margin-bottom: 10px;
+}
+
+.boxes-wrapper .content-box-wrapper .content-box h3 {
+    font-size: 10px;
+    color: var(--secondary-base-color);
+}
+
+.message-banner {
+    background: #fff;
+    padding-bottom: 15px;
+}
+
+.message-banner .message-banner-content {
+    background: var(--primary-base-color);
+    padding: 17px 18px;
+    margin: 0 6px;
+    border-radius: 12px;
+    padding-bottom: 5px;
+}
+
+.message-banner .message-banner-content h3 {
+    margin: 0;
+    color: var(--secondary-base-color);
+    font-size: 12px;
+}
+
+.message-banner .message-banner-content h1 {
+    color: var(--secondary-base-color);
+    font-size: 32px;
+    margin-bottom: 19px;
+    line-height: 5px;
+}
+
+.message-banner .message-banner-content .btn-wrapper {
+    display: flex;
+    justify-content: end;
+    margin-top: -3px;
+}
+
+
+.message-banner .message-banner-content .btn-wrapper button {
+    background: var(--secondary-light-color);
+    padding: 5px 25px;
+    border-radius: 4px;
+    color: var(--primary-base-color);
+    font-weight: 700;
+    font-size: 12px;
+}
+
+.message-banner .message-banner-content p {
+    color: var(--secondary-base-color);
+    font-size: 12px;
+    line-height: 18px;
+    padding: 0 5px;
+    margin-bottom: 5px;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+    float: right;
+    background: var(--secondary-light-color);
+    padding: 4px 10px;
+    border-radius: 14px;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: var(--secondary-base-color);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 54%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+.bottom-content {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.barcode-image-wrapper img {
+    /* max-height: 80px; */
+    width: 100%;
+    display: inline-block;
+    max-height: 86px;
+}
+
+.sale-message {
+    background: #fff;
+    padding-bottom: 15px;
+}
+
+.sale-message .message-banner-content {
+    padding: 15px 18px;
+    margin: 0 6px;
+    background: var(--secondary-light-color);
+    border-radius: 12px;
+    min-height: 146px;
+}
+
+.sale-message .message-banner-content h3 {
+    margin: 0;
+    font-size: 24px;
+    color: var(--primary-base-color);
+}
+
+.sale-message .message-banner-content h4 {
+    top: 0;
+    margin: 0;
+    font-size: 22px;
+    text-align: center;
+    color: var(--primary-base-color);
+    font-weight: 400;
+    line-height: 12px;
+    margin-bottom: 10px;
+}
+
+.sale-message .message-banner-content p {
+    margin: 0;
+    font-size: 16px;
+    text-align: center;
+    color: var(--primary-base-color);
+}
+
+
+.sign-in-wrapper {
+    background: var(--primary-base-color);
+    text-align: center;
+    padding: 20px 0;
+}
+
+.sign-in-wrapper p {
+    //     margin: 0;
+    //     color: #fff;
+    //     font-size: 11px;
+    //     margin-bottom: 15px;
+    margin: 0;
+    color: var(--secondary-base-color);
+    font-size: 14px;
+    text-align: center;
+    padding: 1rem 0 1rem;
+    line-height: 1.8;
+    text-transform: capitalize;
+}
+
+.sign-in-wrapper button {
+    // background: #fff;
+    // padding: 10px 24px;
+    // min-width: 270px;
+    // color: rgb(158, 89, 79);
+    background: #fff;
+    color: var(--secondary-base-color);
+    min-width: 270px;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: normal;
+    text-transform: uppercase;
+    padding: var(--button-padding);
+    transition-property: background-color, color, border;
+    will-change: background-color, color, border;
+    transition-timing-function: ease-out;
+    transition-duration: .25s;
+    cursor: pointer;
+    border-style: solid;
+    border-color: var(--button-border);
+}
+
+
+
+.message-banner .message-banner-content .bottom-content {
+    display: block;
+    position: relative;
+}
+
+.message-banner .message-banner-content .bottom-content .tooltip {
+    position: relative;
+    top: 33px;
+    padding: 4px 11px;
+    border-radius: 5px;
+    font-weight: 700;
+    right: -18px;
+    color: var(--primary-base-color);
+}
+
+.message-banner .message-banner-content .bottom-content .tooltip .tooltiptext {
+    width: 109px;
+    left: -9px;
+    bottom: 40px;
+    font-size: 12px;
+}
+
+
+
+// .message-banner-content svg {
+//     height: 40px;
+// }
+
+// .message-banner-content svg g {
+//     fill: white !important;
+// }
+
+// g rect {
+//     height: 30px;
+// }
+
+// .message-banner-content svg {
+//     transform: translate(0,0);
+//     height: 156px;
+//     width: 317px;
+//     margin: -31px 9px -99px;
+
+// }
+
+// .message-banner-content svg rect {
+//     //  fill:  rgba(0,0,0,0);
+// }
+.message-banner {
+    display: none;
+}
+
+.sale-message {
+    display: none;
+}
+
+.sign-in-wrapper {
+    display: none;
+}
+
+@media(max-width:767px) {
+    .message-banner {
+        display: block;
+    }
+
+    .sale-message {
+        display: block;
+    }
+
+    .sign-in-wrapper {
+        display: block;
+    }
+
+}

@@ -1,0 +1,26 @@
+.buttonsSec{
+    margin-bottom: 13px;
+    // text-align: center;
+    margin-top: 15px;
+}
+
+.buttonsSec .optionsBtn {
+    border-radius: 20px;
+    padding: 10px 20px;
+    background-color: #fff;
+    font-size: 10px;
+    color: #000;
+    border: none;
+    width: 200px;
+}
+
+.buttonsSec .optionsBtn:hover, .buttonsSec .optionsBtn:active {
+    background-color: #c1bcbc;
+    color: #000;
+}
+
+.orderOptCenteredSec{
+    text-align: center;
+    background-color: #f1f1f1;
+    padding: 10px;
+}

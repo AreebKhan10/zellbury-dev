@@ -1,0 +1,34 @@
+.banner-wrapper {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    float: none;
+    padding: 0;
+}
+
+.banner-wrapper .card {
+    background-color: transparent;
+    box-shadow: none;
+    padding-top: 0;
+}
+
+@media (min-width:600px){
+    .banner-wrapper {
+        padding: 0 1rem;
+    }
+}
+
+@media (min-width:767px){
+    .CmsPage{
+        display:none;
+    }
+    .banner-wrapper .card img.mobile {
+        display: none;
+}
+}
+
+@media (max-width:767px){
+    .banner-wrapper .card img.desktop{
+          display: none;
+    }
+}

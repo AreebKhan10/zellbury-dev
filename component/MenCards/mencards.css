@@ -1,0 +1,122 @@
+* {
+  box-sizing: border-box;
+}
+
+
+
+/* Float four columns side by side */
+.column {
+  float: left;
+  width: 33.3%;
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+/* Remove extra left and right margins, due to padding */
+/* .row {margin: 0 -5px;} */
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.column .card > img {
+  width: 100%;
+}
+.cardsWrapper{
+  width: 50%;
+  margin: 0 auto;
+}
+.cardsWrapper .card h3 {
+  color: #000;
+  margin: 0;
+  font-weight: 400;
+  padding: 7px 0;
+  letter-spacing: .1rem;
+  font-family: 'Muli';
+  font-size: 18px;
+}
+
+.cardsWrapper .card a {
+  text-decoration: none;
+}
+
+/* Responsive columns */
+@media screen and (max-width: 600px) {
+  .cardsWrapper {
+    width: 100%;
+    margin: 0 auto;
+}
+.cardsWrapper .column {
+    padding: 0 5px;
+    height: 100%;
+}
+.cardsWrapper .column .card {
+  padding: 0;
+}
+
+.cardsWrapper .card h3 {
+  margin: 0;
+  font-weight: 400;
+  padding: 7px 0;
+  letter-spacing: .1rem;
+  font-family: 'Muli';
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.CmsPage, .CmsPage-Wrapper {
+  padding: 0;
+}
+.cardsWrapper {
+  background: var(--secondary-light-color);
+  padding: 10px 0;
+}
+
+}
+
+
+
+
+/* Style the counter cards */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  padding: 16px 0px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+
+
+@media (max-width:767px){
+
+
+
+
+  .banner-wrapper .card{
+      padding-bottom: 0;
+  }
+  .HomePage .CmsPage, .HomePage .CmsPage-Wrapper {
+      margin-top: 0;
+  }
+  .HomePage .CmsPage-Wrapper .CmsPage-Content .sale-message {
+      padding-bottom: 0;
+  }
+  .sale-message .message-banner-content {
+      border-radius: 12px 12px 0 0;
+  }
+  .HomePage .cardsWrapper {
+      padding: 0px 6px;
+      background: transparent;
+  }
+  .HomePage .cardsWrapper .row {
+      margin: 0;
+      background: var(--secondary-light-color);
+      padding: 10px 6px;
+  }
+  .HomePage .cardsWrapper .card  h3 {
+      background: var(--secondary-light-color);
+  }
+}
