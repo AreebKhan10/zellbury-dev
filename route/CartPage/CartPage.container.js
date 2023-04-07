@@ -83,6 +83,11 @@ export class CartPageContainer extends PureComponent {
         localStorage.setItem('toggle', JSON.stringify({ toggle: loyaltyToggle }))
     }
     componentDidMount() {
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
+        
         const { updateMeta } = this.props;
 
         updateMeta({ title: __('Shopping Bag') });

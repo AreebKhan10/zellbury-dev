@@ -33,7 +33,7 @@ import {
     setQueryParams
 } from 'Util/Url';
 import BrowserDatabase from 'Util/BrowserDatabase';
-
+import history from 'Util/History';
 import CategoryPage from './CategoryPage.component';
 import { LOADING_TIME } from './CategoryPage.config';
 
@@ -173,6 +173,16 @@ export class CategoryPageContainer extends PureComponent {
     }
 
     componentDidMount() {
+        // let auth_token = localStorage.getItem("auth_token");
+        // let customer = localStorage.getItem("customer");
+        // if(auth_token && !customer){
+        //     history.push('/my-account');
+        // }
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
+        
         const {
             categoryIds,
             category: {
@@ -207,8 +217,11 @@ export class CategoryPageContainer extends PureComponent {
             this.updateBreadcrumbs(true);
         }
     }
+   
 
     componentDidUpdate(prevProps) {
+        
+
        const value = StoreConfigurationsQuery.getConfigurationsQuery()
        console.log(value, "<..Value")
 

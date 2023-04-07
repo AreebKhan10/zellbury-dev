@@ -181,7 +181,7 @@ export class ProductPageContainer extends PureComponent {
             .then(response => response.text())
             .then(res => {
                 let WC = JSON.parse(res);
-                this.setState({ wishlist_count: WC.data.customerWishlistCount.count_wishlist_product });
+                this.setState({ wishlist_count: WC?.data?.customerWishlistCount?.count_wishlist_product });
             })
             .catch(error => console.log('error', error));
     }

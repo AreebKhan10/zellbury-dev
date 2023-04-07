@@ -546,8 +546,6 @@ margin-right: 5px;
     .wrap-verify {
         background-color: #F2F5F8;
         margin-top: 15px;
-        // z-index: 101;
-
     }
     .MyAccountOverlay-Heading.txt-center {
         margin: 0;
@@ -611,12 +609,8 @@ margin-right: 5px;
     }
     
     @media (max-width: 767px) {
-        // .NavigationTabs {
-        //     display: none;
-        // }
         .MyAccount {
             height: 100vh;
-            // z-index: 101;
             display: inline-block;
             width: 100%;
             padding-bottom: 50px;
@@ -634,13 +628,7 @@ margin-right: 5px;
             .MyAccount .Overlay .MyAccountOverlay-Action {
             display: inline-block;
             text-align: center;
-            height: 100vh;
-            }
-            .MyAccount .Overlay .MyAccountOverlay-Action .form-wrap-main {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
+            height: 100%;
             }
             .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify {
                 margin: 0;
@@ -648,26 +636,25 @@ margin-right: 5px;
                 align-items: flex-end;
                 justify-content: center;
                 height: 100%;
-                max-height: 180px;
+                max-height: calc(100% - 415px);
                 padding-bottom: 0;
                 background: transparent;
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0;
             }
-            
+            .form-wrap-main {
+                min-height: 365px;
+            }
             .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify > div > div p {
                 max-width: 280px;
                 margin: 0 auto;
             }
             .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify > div {
-              background-color: #F2F5F8;
+                background-color: #F2F5F8;
               width: 100%;
               display: flex;
               align-items: center;
               justify-content: center;
               height: 100%;
+              max-height: 170px;
           }
           .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify > div > div {
                 width: 100%;
@@ -684,23 +671,17 @@ margin-right: 5px;
         width: 100%;
     }
     @media(max-height: 568px) {
-        // .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify {
-        // max-height: 220px;
-        // padding-bottom: 50px;
-        // z-index: 101;
-        // }
+        .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify {
+        max-height: 220px;
+        padding-bottom: 50px;
+        }
         .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify>div {
         padding: 20px 0px;
         }
     }
     @media (max-width: 480px) {
-        .MyAccount .Overlay .MyAccountOverlay-Action .wrap-verify>div {
-            padding: 20px 0px;
-            }
         .MyAccount{
-            // height: 100%;
-            // z-index: 100;
+            height: 82vh;
             padding-bottom: 0;
-            
         } 
     }

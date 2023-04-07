@@ -364,7 +364,7 @@ export class CheckoutContainer extends PureComponent {
                                     const { data } = JSON.parse(sourceData)
 
                                     if (!data.getIdentifiedSources) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             isLoading: false
                                         });
@@ -431,7 +431,7 @@ export class CheckoutContainer extends PureComponent {
                                     const { data } = JSON.parse(sourceData);
 
                                     if (!data.getSourceList) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             locationEnable: false,
                                             isLoading: false
@@ -511,7 +511,7 @@ export class CheckoutContainer extends PureComponent {
 
                                         if (!data.getSourceList) {
 
-                                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                                            showErrorNotification(__('This Item Is Out of Stock!'));
                                             this.setState({
                                                 locationEnable: false,
                                                 isLoading: false
@@ -588,7 +588,7 @@ export class CheckoutContainer extends PureComponent {
                                         const { data } = JSON.parse(sourceData)
 
                                         if (!data.getIdentifiedSources) {
-                                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                                            showErrorNotification(__('This Item Is Out of Stock!'));
                                             this.setState({
                                                 isLoading: false
                                             });
@@ -656,7 +656,7 @@ export class CheckoutContainer extends PureComponent {
                                         const { data } = JSON.parse(sourceData);
 
                                         if (!data.getSourceList) {
-                                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                                            showErrorNotification(__('This Item Is Out of Stock!'));
                                             this.setState({
                                                 locationEnable: false,
                                                 isLoading: false
@@ -740,7 +740,7 @@ export class CheckoutContainer extends PureComponent {
                                     const { data } = JSON.parse(sourceData)
 
                                     if (!data.getIdentifiedSources) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             isLoading: false
                                         });
@@ -798,7 +798,7 @@ export class CheckoutContainer extends PureComponent {
                                     }
                                     const { data } = JSON.parse(sourceData);
                                     if (!data.getSourceList) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             locationEnable: false,
                                             isLoading: false
@@ -871,7 +871,7 @@ export class CheckoutContainer extends PureComponent {
                         const { data } = JSON.parse(sourceData)
 
                         if (!data.getIdentifiedSources) {
-                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                            showErrorNotification(__('This Item Is Out of Stock!'));
                             this.setState({
                                 isLoading: false
                             });
@@ -929,7 +929,7 @@ export class CheckoutContainer extends PureComponent {
                         }
                         const { data } = JSON.parse(sourceData);
                         if (!data.getSourceList) {
-                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                            showErrorNotification(__('This Item Is Out of Stock!'));
                             this.setState({
                                 locationEnable: false,
                                 isLoading: false
@@ -1321,26 +1321,12 @@ export class CheckoutContainer extends PureComponent {
             isLoading: true,
             shippingAddress: shipping_address
         });
-        let customerjson = localStorage.getItem("customer")
-        customerjson = JSON.parse(customerjson)
 
         if (!isSignedIn()) {
             if (!await this.createUserOrSaveGuest()) {
                 this.setState({ isLoading: false });
                 return;
             }
-        }
-        if(customerjson.data.firstname === "" || customerjson.data.firstname === "Name" || customerjson.data.city === "" || customerjson.data.city === null || customerjson.data.city === undefined || customerjson.data.firstname === " " || customerjson.data.firstname === undefined){
-
-            const mutation = MyAccountQuery.getUpdateInformationMutation({firstname:shipping_address.firstname,city:shipping_address.city});
-            this.setState({ isLoading: true });
-    
-             fetchMutation(mutation).then(
-                ({ updateCustomer: { customer } }) => {
-                    BrowserDatabase.setItem(customer, CUSTOMER, ONE_MONTH_IN_SECONDS);
-                },
-                this._handleError
-            );
         }
 
         fetchMutation(CheckoutQuery.getSaveAddressInformation(

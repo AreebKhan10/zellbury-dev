@@ -264,6 +264,7 @@ export class CategoryDetails extends PureComponent {
       const tokenData = JSON.parse(localStorage.getItem("auth_token"));
 
       if (tokenData !== null && this.state.count === 0) {
+        console.log("<---AReeb Khan")
         if (loyaltyPoints.data.getCustomeLoyaltyPoints === null) {
           const customerLocalStorage = JSON.parse(
             localStorage.getItem("customer")
@@ -275,7 +276,7 @@ export class CategoryDetails extends PureComponent {
             );
             if (data?.length) city = data[0].city; //const response = JSON.parse(await _getWeather(data[0].city))
           } else {
-            city = customerLocalStorage?.data?.city;
+            city = customerLocalStorage?.data?.city ? customerLocalStorage?.data?.city : "";
           }
 
           this.setState({
@@ -310,7 +311,7 @@ export class CategoryDetails extends PureComponent {
           );
           if (data?.length) city = data[0].city; //const response = JSON.parse(await _getWeather(data[0].city))
         } else {
-          city = customerLocalStorage?.data?.city;
+          city = customerLocalStorage?.data?.city ? customerLocalStorage?.data?.city : ""
         }
 
         if (
@@ -437,7 +438,7 @@ export class CategoryDetails extends PureComponent {
             <div style={{}}>
               <h4>
                 It's <strong> {this.state?.weatherInfo?.weather} </strong>in{" "}
-                {this.state?.city}
+                {this.state?.city ? this.state?.city : "" }
               </h4>
               <p>Feels like {this.state?.weatherInfo?.feels_like}°C</p>
             </div>

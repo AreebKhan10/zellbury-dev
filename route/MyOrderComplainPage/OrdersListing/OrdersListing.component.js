@@ -114,21 +114,15 @@ export class OrdersListing extends Component {
             let datetoday = moment().format("YYYY-MM-DD");
             let start = moment(datetoday, "YYYY-MM-DD");
 
-            let active = itemOrders.filter(item => item.status_label.toLowerCase() != "canceled_inventory_mismatch" && item.status_label.toLowerCase() != "rts" && item.status_label != "delivered" && item.status_label != "complete" && (item.status_label.split('_'))[0] != "closed" && item.status_label != "canceled" && item.status_label != "canceled_reordered" && item.status_label.toLowerCase() != "undelivered" );
-            let delivered = itemOrders.filter(item => item.status_label.toLowerCase() != "canceled_inventory_mismatch" && item.status_label.toLowerCase() != "packed" && item.status_label.toLowerCase() != "pending" && item.status_label.toLowerCase() != "processing" && item.status_label != "Shipped" && item.status_label != "confirmed" && item.status_label != "canceled" && item.status_label != "canceled_reordered" && item.status_label.toLowerCase() != "undelivered" && item.status_label.toLowerCase() !== 'oos');
-            active = active.filter(item => {
-                if (item.status_label.toLowerCase() === 'oos') {
-                    return item.status_label = 'picking'
-                }
-                return item
-            })
+            let active = itemOrders.filter(item => item.status_label != "canceled_inventory_mismatch" && item.status_label != "delivered" && item.status_label != "complete" && item.status_label != "closed" && item.status_label != "canceled" && item.status_label != "canceled_reordered");
+            let delivered = itemOrders.filter(item => item.status_label != "canceled_inventory_mismatch" && item.status_label != "Packed" && item.status_label.toLowerCase() != "pending" && item.status_label.toLowerCase() != "processing" && item.status_label != "Shipped" && item.status_label != "confirmed" && item.status_label != "canceled" && item.status_label != "canceled_reordered");
             let filteredByMonth = delivered.filter((item) => (moment
                 .duration(
                     start.diff(
                         moment(item.created_at).format("YYYY-MM-DD"), "YYYY-MM-DD")
                 )
             )
-                .asDays() <= 30);
+                .asDays() <= 60);
             this.setState({ deliveredOrders: filteredByMonth, activeOrders: active });
             // this.setState({deliveredOrders: delivered, activeOrders: active});
         }
@@ -234,18 +228,12 @@ export class OrdersListing extends Component {
                     detailData["title"] = `Your order is ${obj.orderData.status_label}`;
                     detailData["deliveryDetail"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} your order is on time and will be delivered between ${estimatedDeliveryTimeline}`;
                     detailData["msg"] = "You can see the detailed tracking below";
-
                 } else if (dateBetween || isSame || isSameWith2Days) {
                     detailData["title"] = `Your order is ${obj.orderData.status_label}`;
                     detailData["deliveryDetail"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} your order is on time and will be delivered between ${estimatedDeliveryTimeline}`;
                     detailData["msg"] = "You can see the detailed tracking below";
-                    // detailData["supportBtn"] = false;
-                } else if (increased) {
-                    detailData["title"] = `Your order is ${obj.orderData.status_label}`;
-                    detailData["deliveryDetail"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} your order is delayed. Our team is already in touch with the courier partner ${obj.customer_info.shipping_description.split('-')[0]} to ensure you get your order.`;
-                    detailData["msg"] = "We apologize for the inconvenience.\n You can see the detailed tracking below.";
                     detailData["supportBtn"] = true;
-                } else if (obj.orderData.status_label.toLowerCase() === 'shipped' || obj.orderData.status_label.toLowerCase() === 'packed') {
+                } else if (increased) {
                     detailData["title"] = `Your order is ${obj.orderData.status_label}`;
                     detailData["deliveryDetail"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} your order is delayed. Our team is already in touch with the courier partner ${obj.customer_info.shipping_description.split('-')[0]} to ensure you get your order.`;
                     detailData["msg"] = "We apologize for the inconvenience.\n You can see the detailed tracking below.";
@@ -294,14 +282,14 @@ export class OrdersListing extends Component {
             // console.log('activeTabData', activeTabData);
             // let showDetailForm = false;
             // let detailData;
-            if (activeTabData.orderId && activeTabData.orderOption && activeTabData.orderOption === "orderNotReceived") {
-                detailData = detailOptionData;
-                showDetailForm = true;
-                detailData.title = 'Your order is pending';
-                detailData.content = "Fahad your order is on time will be delivered between 20/20/2021";
-                detailData.detailsTracking = true;
-                detailData.submitBtnLabel = "CONTACT SUPPORT"
-            }
+            // if(activeTabData.orderId && activeTabData.orderOption && activeTabData.orderOption === "orderNotReceived"){
+            //     detailData  = detailOptionData;
+            //     showDetailForm = true;
+            //     detailData.title = 'Your order is pending';
+            //     detailData.content = "Fahad your order is on time will be delivered between 20/20/2021";
+            //     detailData.detailsTracking = true;
+            //     detailData.submitBtnLabel = "CONTACT SUPPORT"
+            //  }
 
         } else {
             let obj = deliveredTabData;
@@ -390,45 +378,30 @@ export class OrdersListing extends Component {
                 obj.subOption = targetVal;
                 // detailData  = detailOptionData;
                 obj["customer_info"] = orderDetailById.data.getOrderById.shipping_info;
-                let estimatedTimeCheck
+
                 let estimated_delivery = obj.orderData.estimated_delivery;
                 let estimatedDeliveryTimeline = ""
                 if (estimated_delivery === "No ETA") {
                     estimatedDeliveryTimeline = "No ETA"
                 } else if (DateFormat(new Date) === estimated_delivery) {
                     estimatedDeliveryTimeline = "12 - 36 hours"
-                    estimatedTimeCheck = true
                 } else {
                     estimatedDeliveryTimeline = getExpectedDate(estimated_delivery)
                 }
-                let date_today = moment().format('DD-MMM-YYYY');
-                let increased = moment(obj.orderData.estimated_delivery).add(2, 'days').isBefore(date_today);
 
                 if (targetVal === "wrongOrderAddress") {
 
                     if (obj.orderData.status_label === "pending" || obj.orderData.status_label === "confirmed" || obj.orderData.status_label === "picking" || obj.orderData.status_label === "processing") {
-                        detailData["title"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
+                        detailData["title"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} please update the correct delivery location in the mentioned below field, so our champ can deliver your parcel`;
                         detailData["deliveryDetail"] = 'We will change your delivery address';
-                        detailData["msg"] = "Please update the correct delivery address";
                         detailData["showSpacer"] = true;
+                        detailData["msg"] = "Please update the correct delivery address";
                         detailData["showInput"] = true;
-                        if (estimatedTimeCheck === false) {
-                            detailData["submit"] = true
-                        }
-                    } else if (obj.orderData.status_label.toLowerCase() === "packed" || obj.orderData.status_label.toLowerCase() === "shipped") {
-                        detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
-                        // detailData["subTitle"] = `That's not Possible, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
-                        detailData["deliveryDetail"] = `I'm afraid it's a little too late to cancel your order now as it is already ${obj.orderData.status_label.toLowerCase()} by our courier. Expect to receive your order at your doorstep at (${estimatedDeliveryTimeline}).`;
-                        detailData["deliveryDetail2"] = `Any order cancellations at this point will not be refunded if it's online paid or in the case of COD you might be prevented from using COD in future.`;
-
-                        detailData["showNoteSec"] = true;
-                        detailData["noteMsg"] = "Beware of the replica / counterfelt items sold in the market under our brands name. If you wish to purchase original Zellbury products, please purchase at from one of our stores or our website."
-                        // detailData["submit"] = true;
-
+                        detailData["submit"] = true;
                     } else {
                         detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
                         detailData["deliveryDetail"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your desired address`;
-                        // detailData["msg"] = "Please update the correct delivery address";
+                        detailData["msg"] = "Please update the correct delivery address";
                         detailData["showInput"] = true;
                         detailData["submit"] = true;
                     }
@@ -439,89 +412,25 @@ export class OrdersListing extends Component {
                     // detailData.textArea = true;
                 }
                 if (targetVal === "itemFaster") {
-
-                    if (obj.orderData.status_label.toLowerCase() === "packed" || obj.orderData.status_label.toLowerCase() === "shipped") {
-                        if (increased) {
-                            detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
-                            // detailData["deliveryDetail"] = `I'm afraid it's a little too late to cancel your order now as it is already ${obj.orderData.status_label.toLowerCase()} by our courier. Expect to receive your order at your doorstep at (${estimatedDeliveryTimeline}).`;
-                            // detailData["deliveryDetail2"] = `Any order cancellations at this point will not be refunded if it's online paid or in the case of COD you might be prevented from using COD in future.`;
-                            detailData["deliveryDetail"] = `your order will be delivered between ${obj?.orderData?.estimated_delivery}`;
-                            detailData["msg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            detailData["msg2"] = "You can see the detailed tracking below";
-                            detailData["detailTracking"] = true;
-                            // detailData["msg"] = "Once your account is blocked you will not be able to use COD option in future.";
-                            // detailData["showNote"] = true;
-                            detailData["submit"] = true;
-                            detailData["status"] = 2;
-                            detailData["group"] = 82000632682;
-                        } else {
-                            detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
-                            // detailData["deliveryDetail"] = `I'm afraid it's a little too late to cancel your order now as it is already ${obj.orderData.status_label.toLowerCase()} by our courier. Expect to receive your order at your doorstep at (${estimatedDeliveryTimeline}).`;
-                            // detailData["deliveryDetail2"] = `Any order cancellations at this point will not be refunded if it's online paid or in the case of COD you might be prevented from using COD in future.`;
-                            detailData["deliveryDetail"] = `your order will be delivered between ${obj?.orderData?.estimated_delivery}`;
-                            detailData["msg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            detailData["msg2"] = "You can see the detailed tracking below";
-                            detailData["detailTracking"] = true;
-                            // detailData["msg"] = "Once your account is blocked you will not be able to use COD option in future.";
-                            // detailData["showNote"] = true;
-                            // detailData["submit"] = true;
-
-                        }
-                    } else {
-                        if (increased) {
-                            // detailData["title"] = `Your order is ${obj.orderData.status_label}`;
-                            detailData["title"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
-                            // detailData["subTitle"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
-                            // detailData["deliveryDetail"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} Your order is delayed. Our teams are already in touch with the courier partner ${obj?.customer_info?.shipping_description} to ensure you get your order`;
-                            // detailData["deliveryDetail2"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            // detailData["courierMsg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            // detailData["detailTracking"] = true;
-                            // detailData["submit"] = true;
-                            // detailData["title"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} your order is delayed. Our teams are already in touch with the courier partner Leoperd to ensure you get your order.`;
-                            // detailData["courierMsg"] = `We apologize for inconvenience you can see the detailed tracking below.`;
-                            // detailData["msg"] = "We apologize for inconvenience you can see the detailed tracking below.";
-                            detailData["deliveryDetail"] = `your order will be delivered between ${obj?.orderData?.estimated_delivery}`;
-                            detailData["msg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            detailData["msg2"] = "You can see the detailed tracking below";
-                            detailData["detailTracking"] = true;
-                            detailData["increase_data"] = true;
-                            detailData["submit"] = true;
-                            detailData["status"] = 2;
-
-                        } else {
-                            // detailData["title"] = `Your order is ${obj.orderData.status_label}`;
-                            detailData["title"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
-                            // detailData["subTitle"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
-                            // detailData["deliveryDetail"] = `Your order will be delivered between ${estimatedDeliveryTimeline} `;
-                            // detailData["deliveryDetail"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} Your order is on time and will be delivered between ${estimatedDeliveryTimeline}`;
-                            detailData["deliveryDetail"] = `your order will be delivered between ${obj?.orderData?.estimated_delivery}`;
-                            detailData["msg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            detailData["msg2"] = "You can see the detailed tracking below";
-                            // detailData["courierMsg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
-                            // detailData["detailTracking"] = true;
-                            // detailData["submit"] = true;
-                            // detailData["title"] = `${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()} your order is delayed. Our teams are already in touch with the courier partner Leoperd to ensure you get your order.`;
-                            // detailData["courierMsg"] = `We apologize for inconvenience you can see the detailed tracking below.`;
-                            // detailData["msg"] = `We will contact our courier partner ${obj?.customer_info?.shipping_description} to deliver your order faster`;
-                            // detailData["msg2"] = "You can see the detailed tracking below";
-                            detailData["detailTracking"] = true;
-                            // detailData["submit"] = true;
-
-                        }
-                    }
+                    detailData["title"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
+                    detailData["deliveryDetail"] = `Your order is on time and will be delivered between ${estimatedDeliveryTimeline}`;
+                    detailData["courierMsg"] = `We will contact our courier partner ${obj.customer_info.shipping_description.split('-')[0]} to deliver your order at your order faster`;
+                    detailData["msg"] = "You can see the detailed tracking below";
+                    detailData["detailTracking"] = true;
+                    detailData["submit"] = true;
                 }
+
                 if (targetVal === "mistakenlyPlacedOrder") {
                     if (obj.orderData.status_label === "pending" || obj.orderData.status_label === "confirmed" || obj.orderData.status_label === "picking" || obj.orderData.status_label === "processing") {
                         detailData["title"] = `No Worries, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
                         detailData["deliveryDetail"] = "Frequent cancellations may occur in blocking of your account";
                         detailData["msg"] = "Once your account is blocked you will not be able to use COD option in future.";
                         detailData["submit"] = true;
-                    } else if (obj.orderData.status_label.toLowerCase() === "packed" || obj.orderData.status_label.toLowerCase() === "shipped") {
+                    } else if (obj.orderData.status_label === "Packed" || obj.orderData.status_label === "Shipped") {
                         detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
-                        detailData["deliveryDetail"] = `I'm afraid it's a little too late to cancel your order now as it is already ${obj.orderData.status_label.toLowerCase()} by our courier. Expect to receive your order at your doorstep at (${estimatedDeliveryTimeline}).`;
-                        detailData["deliveryDetail2"] = `Any order cancellations at this point will not be refunded if it's online paid or in the case of COD you might be prevented from using COD in future.`;
-                        detailData["msg"] = "Frequent cancellations may occur in blocking of your account.";
-                        detailData["msg2"] = "Once your account is blocked you will not be able to use COD option in future.";
+                        detailData["subMsg"] = "I'm afraid it's a little too late to cancel your order now as it is already shipped by our courier. Expect to receive your order at your doorstep at (ETA)";
+                        detailData["deliveryDetail"] = "Frequent cancellations may occur in blocking of your account";
+                        detailData["msg"] = "Once your account is blocked you will not be able to use COD option in future.";
                         detailData["showNote"] = true;
                     } else {
                         detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
@@ -530,6 +439,7 @@ export class OrdersListing extends Component {
                         detailData["showNote"] = true;
                     }
                 }
+
                 if (targetVal === "cheaperOrder") {
                     if (obj.orderData.status_label === "pending" || obj.orderData.status_label === "confirmed" || obj.orderData.status_label === "picking" || obj.orderData.status_label === "processing") {
                         detailData["title"] = `That's not Possible, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
@@ -538,22 +448,18 @@ export class OrdersListing extends Component {
                         detailData["showNoteSec"] = true;
                         detailData["noteMsg"] = "Beware of the replica / counterfelt items sold in the market under our brands name. If you wish to purchase original Zellbury products, please purchase at from one of our stores or our website."
                         detailData["submit"] = true;
-                    } else if (obj.orderData.status_label.toLowerCase() === "packed" || obj.orderData.status_label.toLowerCase() === "shipped") {
-                        detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
-                        detailData["deliveryDetail"] = `I'm afraid it's a little too late to cancel your order now as it is already ${obj.orderData.status_label.toLowerCase()} by our courier. Expect to receive your order at your doorstep at (${estimatedDeliveryTimeline}).`;
-                        detailData["deliveryDetail2"] = `Any order cancellations at this point will not be refunded if it's online paid or in the case of COD you might be prevented from using COD in future.`;
-                        // detailData["msg"] = "Please note we will only provide after sales services for customers who have purchased directly from one of our stores or our websites.";
+                    } else if (obj.orderData.status_label === "Packed" || obj.orderData.status_label === "Shipped") {
+                        detailData["title"] = `That's not Possible, ${obj.customer_info.shipping_address.firstname.split(' ')[0].trim()}`;
+                        detailData["deliveryDetail"] = "Our prices are uniform across all our sales channels";
+                        detailData["msg"] = "Please note we will only provide after sales services for customers who have purchased directly from one of our stores or our websites.";
                         detailData["showNoteSec"] = true;
-                        detailData["noteMsg"] = "Beware of the replica / counterfelt items sold in the market under our brands name. If you wish to purchase original Zellbury products, please purchase at from one of our stores or our website."
-                        // detailData["noteMsg2"] = "Frequent cancellations may occur in blocking of your account";
-                        // detailData["noteMsg3"] = "Once your account is blocked you will not be able to use COD option in future.";
-                        detailData["submit"] = false;
+                        detailData["noteMsg"] = "I'm afraid it's a little too late to cancel your order now as it is already shipped by our courier. Expect to receive your order at your doorstep at (ETA)"
+                        detailData["submit"] = true;
                     } else {
                         detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
                         detailData["deliveryDetail"] = "If you wish to not receive this order you can refuse it to our courier at doorstep.";
                         detailData["showNoteSec"] = true;
                         detailData["noteMsg"] = "Beware of the replica / counterfelt items sold in the market under our brands name. If you wish to purchase original Zellbury products, please purchase at from one of our stores or our website."
-
                     }
                 }
                 if (targetVal === "fabricQuality") {
@@ -563,16 +469,6 @@ export class OrdersListing extends Component {
                         detailData["showNoteSec"] = true;
                         detailData["noteMsg"] = "Beware of the replica / counterfelt items sold in the market under our brands name. If you wish to purchase original Zellbury products, please purchase at from one of our stores or our website."
                         detailData["submit"] = true;
-
-                    } else if (obj.orderData.status_label.toLowerCase() === "packed" || obj.orderData.status_label.toLowerCase() === "shipped") {
-                        detailData["title"] = `Your order is already ${obj.orderData.status_label}`;
-                        detailData["deliveryDetail"] = `I'm afraid it's a little too late to cancel your order now as it is already ${obj.orderData.status_label.toLowerCase()} by our courier. Expect to receive your order at your doorstep at (${estimatedDeliveryTimeline}).`;
-                        detailData["deliveryDetail2"] = `Any order cancellations at this point will not be refunded if it's online paid or in the case of COD you might be prevented from using COD in future.`;
-                        detailData["showNoteSec"] = true;
-                        detailData["noteMsg"] = "Beware of the replica / counterfelt items sold in the market under our brands name. If you wish to purchase original Zellbury products, please purchase at from one of our stores or our website."
-                        // detailData["noteMsg2"] = "Frequent cancellations may occur in blocking of your account";
-                        // detailData["noteMsg3"] = "Once your account is blocked you will not be able to use COD option in future.";
-                        detailData["submit"] = false;
 
                     } else {
                         detailData["title"] = `Your order is already ${obj.orderData.status_label}`;

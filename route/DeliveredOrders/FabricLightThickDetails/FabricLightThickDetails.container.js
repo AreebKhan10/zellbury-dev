@@ -22,6 +22,7 @@ import { showNotification } from 'Store/Notification/Notification.action';
 import { showPopup } from 'Store/Popup/Popup.action';
 import { changeNavigationState, goToPreviousNavigationState } from 'Store/Navigation/Navigation.action';
 import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
+import { manageComplain } from 'Store/Complain/Complain.action';
 
 export const OrderDispatcher = import(
     /* webpackMode: "lazy", webpackChunkName: "dispatchers" */
@@ -45,6 +46,7 @@ export const mapDispatchToProps = (dispatch) => ({
     showPopup: (payload) => dispatch(showPopup(CONFIRM_POPUP_ID, payload)),
     hidePopup: () => dispatch(showPopup('', {})),
     setHeaderState: (headerState) => dispatch(changeNavigationState(TOP_NAVIGATION_TYPE, headerState)),
+    updateComplain: (data) => dispatch(manageComplain(data)),
 });
 
 class FabricLightThickDetailsContainer extends PureComponent {

@@ -1,5 +1,10 @@
 .centered {
     text-align: center;
+
+    @include mobile {
+        height: 100%;
+    }
+
 }
 
 .detaileTrackingHeading {
@@ -10,6 +15,7 @@
     margin-top: 20px;
     margin-bottom: 20px;
     font-weight: bold;
+    width: 100%;
 }
 
 .orderDeliverySec {
@@ -17,8 +23,8 @@
     font-size: 16px;
     padding-left: 15px;
     padding-right: 15px;
-    width: 80%;
-    margin: 0 auto;
+    width: 100%;
+    margin: 22px auto;
 }
 
 .subContent {
@@ -26,9 +32,13 @@
     margin: 20px 0px;
 }
 
-// .pageTitle{
-//     margin-bottom: 30px;
-// }
+.pageTitle {
+    margin-bottom: 30px;
+}
+
+.pageSubTitle {
+    margin-bottom: 30px;
+}
 
 .content {
     margin-top: 60px;
@@ -83,14 +93,19 @@
 }
 
 .spaceBtm30 {
-    margin-bottom: 70px;
+    margin-bottom: 30px;
 }
 
 .detail-section {
     padding-bottom: 50px;
 
     @include mobile {
-        margin-top: 90px;
+        margin-top: 60px;
+        height: 70%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -132,12 +147,12 @@
     text-transform: uppercase;
 
     @include mobile {
-        padding: 20px 30px;
+        padding: 21px 30px;
         font-size: 16px;
-        /* margin: 175px 0px !important; */
-        position: absolute;
-        bottom: 101px;
-        left: 50%;
-        transform: translate(-50%);
+        width: 222px;
+        // position: absolute;
+        // bottom: 0px;
+        margin-top: 50px;
+        // transform: translate(-50%);
     }
 }

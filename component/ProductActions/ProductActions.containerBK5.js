@@ -113,24 +113,18 @@ export class ProductActionsContainer extends PureComponent {
         //const { getDefaultPosition } = this.props;
         //this.setState({ quantity: getDefaultPosition() })
         if (isSignedIn()) {
-            if(localStorage.getItem("customer") !== null){
-                let { city, addresses } = BrowserDatabase.getItem('customer')
-                let shippingAddress = addresses.find(x => x.default_billing && x.default_shipping)
-                console.log("shipping address ------>",shippingAddress)
-                if (shippingAddress) {
-                    if(shippingAddress.city){
-                        this.getEstimatedDay(shippingAddress.city? shippingAddress.city : "")
-                    }
+            let { city, addresses } = BrowserDatabase.getItem('customer')
+            let shippingAddress = addresses.find(x => x.default_billing && x.default_shipping)
+            if (shippingAddress) {
+                this.getEstimatedDay(shippingAddress.city)
                 // do some work
-                }
-                else if (city !== null || city!== undefined) {
-                    this.getEstimatedDay(city)
-                }
-                else {
+            }
+            else if (city) {
+                this.getEstimatedDay(city)
+            }
+            else {
 
             }
-            }
- 
         }
     }
 
@@ -173,20 +167,16 @@ export class ProductActionsContainer extends PureComponent {
     getDeliveryEstimate() {
         const { showNotification } = this.props;
         if (isSignedIn()) {
-            const customer = BrowserDatabase.getItem('customer')
-            if(customer){
-                
-                let { city, addresses } = customer
-                let shippingAddress = addresses.find(x => x.default_billing && x.default_shipping)
-                if (shippingAddress) {
-                    this.getEstimatedDay(shippingAddress.city ? shippingAddress.city : "")
-                }
-                else if (city) {
-                    this.getEstimatedDay(city)
-                }
-                else {
-                    console.log("<---KING KHAN")
-                }
+            let { city, addresses } = BrowserDatabase.getItem('customer')
+            let shippingAddress = addresses.find(x => x.default_billing && x.default_shipping)
+            if (shippingAddress) {
+                this.getEstimatedDay(shippingAddress.city)
+            }
+            else if (city) {
+                this.getEstimatedDay(city)
+            }
+            else {
+
             }
         }
         else {

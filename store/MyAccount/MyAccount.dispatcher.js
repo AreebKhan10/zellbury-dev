@@ -57,6 +57,8 @@ export class MyAccountDispatcher {
 
         return executePost(prepareQuery([query])).then(
             ({ customer }) => {
+                console.log("<----CustomerMaqsood1", customer)
+
                 dispatch(updateCustomerDetails(customer));
                 BrowserDatabase.setItem(customer, CUSTOMER, ONE_MONTH_IN_SECONDS);
             },
@@ -68,8 +70,9 @@ export class MyAccountDispatcher {
             const query = MyAccountQuery.getCustomerQuery();
             executePost(prepareQuery([query])).then(
                 ({ customer }) => {
-                    //dispatch(updateCustomerDetails(customer));
-                    //BrowserDatabase.setItem(customer, CUSTOMER, ONE_MONTH_IN_SECONDS);
+                    console.log("<----CustomerMaqsood", customer)
+                    dispatch(updateCustomerDetails(customer));
+                    BrowserDatabase.setItem(customer, CUSTOMER, ONE_MONTH_IN_SECONDS);
                     resolve(customer);
                 },
                 (error) => {

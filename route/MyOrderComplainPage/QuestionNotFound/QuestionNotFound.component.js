@@ -117,7 +117,7 @@ export class QuestionNotFound extends PureComponent {
                 formdata.append("email", `${customer.data.email}`);
                 formdata.append("subject", `Question not found, ${complainData.orderData.orderData.increment_id}`);
                 formdata.append("description", `${complainData.orderData.orderData.increment_id} - comment: ${detailMsg}`);
-                formdata.append("status", 2)
+                formdata.append("status", 5);
                 formdata.append("priority", 1);
                 formdata.append("group_id", 82000622276),
                     formdata.append("name", `${customer.data.firstname}`),
@@ -162,7 +162,7 @@ export class QuestionNotFound extends PureComponent {
                 formdata.append("group_id", 82000622276);
                 formdata.append("type", "Product Related");
                 formdata.append("priority", 1);
-                formdata.append("status", 2);
+                formdata.append("status", 5);
                 formdata.append("description", `${complainData.orderData.orderData.increment_id} - comment: ${detailMsg}`);
                 formdata.append("phone_no", `${phoneNum}`);
                 formdata.append("attachments", (imageForRMA.split(','))[1]);

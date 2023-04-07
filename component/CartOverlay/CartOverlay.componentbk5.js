@@ -34,11 +34,8 @@ export class CartOverlay extends PureComponent {
     };
 
     componentDidMount() {
-        let element = document.querySelector(".NavigationTabs") 
-        if(element){
-            element.style.display = "block"
-        }
         const { showOverlay } = this.props;
+
         if (!isMobile.any()) {
             showOverlay(CART_OVERLAY);
         }
@@ -165,7 +162,7 @@ export class CartOverlay extends PureComponent {
                   { ...options }
                 >
                     
-                    { __(firstName?'CONTINUE AS ' + firstName:'CONTINUE AS NAME') }
+                    { __(firstName?'CONTINUE AS ' + firstName:'Secure checkout') }
                 </Link>
             </div>);
             }

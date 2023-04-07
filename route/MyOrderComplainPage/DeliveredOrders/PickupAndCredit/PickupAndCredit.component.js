@@ -32,7 +32,7 @@ export class PickupAndCredit extends PureComponent {
     //  renderConfirmPopup = () => {
     //     return <ExchangeFromStorePopup handlePopupConfirm={this.handlePopupConfirm} />
     //  }
-  
+
     handleSubmit = () => {
         if (countForTicket === 0) {
             countForTicket++
@@ -174,7 +174,7 @@ export class PickupAndCredit extends PureComponent {
             countForTicket++
 
             const { complainData, showNotification } = this.props;
-            console.log("complainData12......with image", complainData.myData.barcodeData.data.validateBarcode.order[0].order_id);
+            console.log("complainData12......with image", complainData.barcodeData.data.validateBarcode.order[0].order_id);
             let description;
             let productOption = complainData.myData.productOption;
             let customer = JSON.parse(localStorage.getItem('customer'));
@@ -198,9 +198,7 @@ export class PickupAndCredit extends PureComponent {
 
             console.log('check data ', complainData);
 
-
             const promise1 = new Promise((resolve, reject) => {
-                let tagsArr = ["101", `${complainData?.myData?.barcodeData?.data?.validateBarcode?.order[0]?.source_name}`, `${complainData?.myData?.barcodeData?.data?.validateBarcode?.order[0]?.city}`]
                 myHeaders.append("Authorization", "Basic aGY2MWJqQkdOU1lsNndRZzA5Uzp4");
                 myHeaders.append("Cookie", "_x_w=2");
                 var formdata = new FormData();
@@ -209,20 +207,16 @@ export class PickupAndCredit extends PureComponent {
                 formdata.append("email", `${customer.data.email}`);
                 formdata.append("subject", `${subject}`);
                 formdata.append("description", `${description}`);
-                formdata.append("status", 2);
+                formdata.append("status", 5);
                 formdata.append("priority", 1);
-                for (var i = 0; i < tagsArr.length; i++) {
-                    formdata.append("tags[]", tagsArr[i]);
-                }
-                formdata.append("group_id", 82000622276);
-
-                formdata.append("unique_external_id", `"${customer.data.email}"`);
-                formdata.append("source", 101);
-                formdata.append("custom_fields[cf_resolution]", resolution);
-                formdata.append("custom_fields[cf_barcode]", complainData.myData.barcode);
-                formdata.append("name", `${customer.data.firstname}`);
-                formdata.append("phone", `${phoneNum}`);
-                formdata.append("type", "Product Related");
+                formdata.append("group_id", 82000622276),
+                    formdata.append("unique_external_id", `"${customer.data.email}"`),
+                    formdata.append("source", 101),
+                    formdata.append("custom_fields[cf_resolution]", resolution)
+                formdata.append("custom_fields[cf_barcode]", complainData.myData.barcode),
+                    formdata.append("name", `${customer.data.firstname}`),
+                    formdata.append("phone", `${phoneNum}`),
+                    formdata.append("type", "Product Related");
 
                 var requestOptions = {
                     method: 'POST',
@@ -242,7 +236,7 @@ export class PickupAndCredit extends PureComponent {
                             reject('error')
                         } else {
                             // showNotification('success', __("Ticket Submitted Successfully"));
-                            resolve('ok')
+                            reject('ok')
                             // history.push('/ordercomplain/orderslist');
                         }
 
@@ -267,13 +261,13 @@ export class PickupAndCredit extends PureComponent {
                 formdata.append("group_id", 82000622276);
                 formdata.append("type", "Product Related");
                 formdata.append("priority", 1);
-                formdata.append("status", 2);
+                formdata.append("status", 5);
                 formdata.append("description", `${description}`);
                 formdata.append("phone_no", `${phoneNum}`);
                 formdata.append("attachments", (imageForRMA.split(','))[1]);
-                formdata.append("cf_barcode", complainData?.myData?.barcode);
+                formdata.append("cf_barcode", complainData.barcode);
                 formdata.append("cf_resolution", resolution);
-                formdata.append("order_id", complainData?.myData?.barcodeData?.data?.validateBarcode?.order[0]?.order_id);
+                formdata.append("order_id", complainData?.barcodeData?.data?.validateBarcode?.order[0]?.order_id);
                 var requestOptions = {
                     method: 'POST',
                     headers: myHeaders,
@@ -305,7 +299,7 @@ export class PickupAndCredit extends PureComponent {
                 myHeaders.append("Cookie", "PHPSESSID=5382a5r1ihsjjtgit3ob6kgdq5; private_content_version=f85cf59eeec8dd114413330c8c8b1562");
 
                 var graphql = JSON.stringify({
-                    query: `{\r\n  returnShipment(orderId:\"${complainData.myData.barcodeData.data.validateBarcode.order[0].order_id}\") {\r\n    response{\r\n        msg\r\n        status\r\n    }\r\n  }\r\n}\r\n `,
+                    query: `{\r\n  returnShipment(orderId:\"${complainData.barcodeData.data.validateBarcode.order[0].order_id}\") {\r\n    response{\r\n        msg\r\n        status\r\n    }\r\n  }\r\n}\r\n `,
                     variables: {}
                 })
                 var requestOptions = {
@@ -371,13 +365,12 @@ export class PickupAndCredit extends PureComponent {
                         dataObj['group_id'] = 82000622276;
                         dataObj['type'] = 'Product Related';
                         dataObj['priority'] = 1;
-                        dataObj['status'] = 2;
+                        dataObj['status'] = 5;
                         dataObj["unique_external_id"] = `${customer.data.email}`;
                         dataObj["source"] = 101;
                         dataObj["name"] = `${customer.data.firstname}`;
                         dataObj["email"] = `${customer.data.email}`;
                         dataObj["phone"] = `${phoneNum}`;
-                        dataObj["tags"] = ["101", `${complainData?.myData?.barcodeData?.data?.validateBarcode?.order[0]?.source_name}`, `${complainData?.myData?.barcodeData?.data?.validateBarcode?.order[0]?.city}`];
                         // dataObj['description'] = `${complainData.locationData.orderData.orderData.increment_id}`;
                         dataObj['description'] = `${description}`;
                     }
@@ -428,13 +421,13 @@ export class PickupAndCredit extends PureComponent {
                 formdata.append("group_id", 82000622276);
                 formdata.append("type", "Product Related");
                 formdata.append("priority", 1);
-                formdata.append("status",2);
+                formdata.append("status", 5);
                 formdata.append("description", `${description}`);
                 formdata.append("phone_no", `${phoneNum}`);
                 // formdata.append("attachments", (imageForRMA.split(','))[1]);
                 formdata.append("cf_barcode", complainData.myData.barcode);
                 formdata.append("cf_resolution", resolution);
-                formdata.append("order_id", complainData?.myData?.barcodeData?.data?.validateBarcode?.order[0]?.order_id);
+                formdata.append("order_id", complainData?.barcodeData?.data?.validateBarcode?.order[0]?.order_id);
                 var requestOptions = {
                     method: 'POST',
                     headers: myHeaders,
@@ -505,12 +498,6 @@ export class PickupAndCredit extends PureComponent {
         }
     }
 
-    componentDidMount() {
-        console.log('this.props.....', this.props);
-        const { setHeaderState } = this.props
-        setHeaderState({ name: 'order-complain', title: 'Complain form', onBackClick: () => history.goBack() });
-    }
-
     renderContent = () => {
         const { isLoading, showConfirmPopup, complainData } = this.props;
         console.log('complainData.myData', complainData);
@@ -523,11 +510,7 @@ export class PickupAndCredit extends PureComponent {
                         </p>
                     </div>
                     <div className="pickUpBtnSec">
-                        {complainData?.myData?.dataImg ? (
-                            <button onClick={() => this.submitTicketWithImage()} >CONFIRM</button>
-                        ) : (
-                            <button onClick={() => this.submitTicketWithoutImage()} >CONFIRM</button>
-                        )}
+                        <button onClick={complainData?.myData?.dataImg ? this.submitTicketWithImage : this.submitTicketWithoutImage} type="text">CONFIRM</button>
                     </div>
                     <div className="mistake-help">
                         <p className="noteHead">NOTE</p>

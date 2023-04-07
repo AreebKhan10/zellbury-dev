@@ -192,7 +192,7 @@ export class CartPage extends PureComponent {
                             onClick={onCheckoutButtonClick}
                         >
 
-                            {__(firstName ? 'CONTINUE AS ' + firstName : 'CONTINUE AS NAME')}
+                            {__(firstName ? 'CONTINUE AS ' + firstName : 'Secure checkout')}
                         </button>
                         <button
                             block="CartPage"

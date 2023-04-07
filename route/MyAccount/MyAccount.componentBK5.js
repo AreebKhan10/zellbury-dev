@@ -31,6 +31,7 @@ import {
     NEWSLETTER_SUBSCRIPTION,
     tabMapType
 } from 'Type/Account';
+import history from 'Util/History';
 
 export class MyAccount extends PureComponent {
     static propTypes = {
@@ -52,7 +53,6 @@ export class MyAccount extends PureComponent {
 
     renderLoginOverlay() {
         const { onSignIn } = this.props;
-
         return (
             <MyAccountOverlay
               onSignIn={ onSignIn }
@@ -70,9 +70,19 @@ export class MyAccount extends PureComponent {
         } = this.props;
 
         if (!isSignedIn) {
+            let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
             return this.renderLoginOverlay();
         }
+        // let checkLocalStorage = localStorage.getItem('checkHomeLogin')
+        // if(!checkLocalStorage) {
+        //     history.push('/')
+        //     return
+        // }
 
+        console.log('orders................', this.props)
         const TabContent = this.renderMap[activeTab];
         const { name } = tabMap[activeTab];
         return (

@@ -33,7 +33,6 @@ import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
     complainData: state.ComplainReducer.payload,
 });
  
-
  export const mapDispatchToProps = (dispatch) => ({
     showPopup: (payload) => dispatch(showPopup(CONFIRM_POPUP_ID, payload)),
     setHeaderState: (headerState) => dispatch(changeNavigationState(TOP_NAVIGATION_TYPE, headerState)),

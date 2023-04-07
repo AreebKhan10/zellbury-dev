@@ -29,7 +29,7 @@ import Field from 'Component/Field';
 import { mapStateToProps } from 'Component/Link/Link.container';
 
 export class OrderDetails extends PureComponent {
-    
+
     static propTypes = {
         isLoading: PropTypes.bool.isRequired,
         showNotification: PropTypes.func.isRequired,
@@ -46,6 +46,16 @@ export class OrderDetails extends PureComponent {
     }
 
     componentDidMount() {
+        // try{
+        //     const divHeight = document.getElementsByClassName("centered")[0].clientHeight
+        //     const screenHeight = screen.height;
+        //     if(divHeight < screenHeight){
+        //         this.customeHeight = screenHeight
+        //     }
+        // }catch(error)   {
+        //     console.log(error);
+        // }
+
         const { complainData } = this.props;
         if (!complainData) {
             console.log('hello world again.......');
@@ -86,7 +96,7 @@ export class OrderDetails extends PureComponent {
     }
 
 
-    handleFormSubmission = async () => {
+    handleFormSubmission = async (status, group) => {
         // console.log('tttt', this.props);
         const { location, complainData, showNotification } = this.props;
         console.log("complainData", complainData);
@@ -102,36 +112,18 @@ export class OrderDetails extends PureComponent {
             if (orderMainOpt === "orderNotReceived") {
                 dataObj = {};
                 dataObj['email'] = `${customer.data.email}`;
-                dataObj['subject'] = `Delay, ${complainData.orderData.orderData.increment_id} `;
+                dataObj['subject'] = `Didn’t receive the order, ${complainData.orderData.orderData.increment_id} `;
                 dataObj['group_id'] = 82000622276;
-                dataObj['type'] = 'Order not received';
+                // dataObj['type'] = 'Order not received';
+                dataObj['type'] = 'Didn’t receive the order';
                 dataObj['priority'] = 3;
+                dataObj["tags"] = ["101", `${complainData?.getOrderById?.shipping_info?.shipping_address?.city}`];
                 dataObj['status'] = 2;
                 dataObj['description'] = `${complainData.orderData.orderData.increment_id}`;
                 let data = JSON.stringify(dataObj)
                 this.submitFreshDeskTicket(data);
                 return
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             if (orderMainOpt === "cancelMyOrder" || orderMainOpt === "changeMyOrder") {
                 dataObj = {};
@@ -142,6 +134,7 @@ export class OrderDetails extends PureComponent {
                     dataObj['type'] = orderMainOpt === "cancelMyOrder" ? 'Order Cancellation' : 'Order Modification';
                     dataObj['priority'] = 3;
                     dataObj['status'] = 2;
+                    dataObj["tags"] = ["101", `${complainData?.getOrderById?.shipping_info?.shipping_address?.city}`];
                     dataObj['description'] = `${complainData.orderData.orderData.increment_id} - Updated Address: ${address}`;
                     if (address) {
                         let add = address.split(' ');
@@ -157,10 +150,11 @@ export class OrderDetails extends PureComponent {
                 if (orderSubOpt === "itemFaster") {
                     dataObj['email'] = `${customer.data.email}`;
                     dataObj['subject'] = `I Need the Item Faster, ${complainData.orderData.orderData.increment_id} `;
-                    dataObj['group_id'] = 82000622276;
+                    dataObj['group_id'] = group || 82000622276;
                     dataObj['type'] = orderMainOpt === "cancelMyOrder" ? 'Order Cancellation' : 'Order Modification';
                     dataObj['priority'] = 3;
-                    dataObj['status'] = 2;
+                    dataObj['status'] = status;
+                    dataObj["tags"] = ["101", `${complainData?.getOrderById?.shipping_info?.shipping_address?.city}`];
                     dataObj['description'] = `${complainData.orderData.orderData.increment_id}`;
                     let data = JSON.stringify(dataObj)
                     this.submitFreshDeskTicket(data);
@@ -172,7 +166,8 @@ export class OrderDetails extends PureComponent {
                     dataObj['group_id'] = 82000622276;
                     dataObj['type'] = orderMainOpt === "cancelMyOrder" ? 'Order Cancellation' : 'Order Modification';
                     dataObj['priority'] = 3;
-                    dataObj['status'] = 2;
+                    dataObj["tags"] = ["101", `${complainData?.getOrderById?.shipping_info?.shipping_address?.city}`];
+                    dataObj['status'] = orderMainOpt === "cancelMyOrder" ? 5 : 2;;
                     if (address) {
                         dataObj['description'] = `${complainData.orderData.orderData.increment_id} - Updated Address: ${address}`;
                     } else {
@@ -188,7 +183,8 @@ export class OrderDetails extends PureComponent {
                     dataObj['group_id'] = 82000622276;
                     dataObj['type'] = orderMainOpt === "cancelMyOrder" ? 'Order Cancellation' : 'Order Modification';
                     dataObj['priority'] = 3;
-                    dataObj['status'] = 2;
+                    dataObj['status'] = orderMainOpt === "cancelMyOrder" ? 5 : 2;;
+                    dataObj["tags"] = ["101", `${complainData?.getOrderById?.shipping_info?.shipping_address?.city}`];
                     if (address) {
                         dataObj['description'] = `${complainData.orderData.orderData.increment_id} - Updated Address: ${address}`;
                     } else {
@@ -204,8 +200,9 @@ export class OrderDetails extends PureComponent {
                     dataObj['group_id'] = 82000622276;
                     dataObj['type'] = orderMainOpt === "cancelMyOrder" ? 'Order Cancellation' : 'Order Modification';
                     // dataObj['tags'] = ;
+                    dataObj["tags"] = ["101", `${complainData?.getOrderById?.shipping_info?.shipping_address?.city}`];
                     dataObj['priority'] = 3;
-                    dataObj['status'] = 2;
+                    dataObj['status'] = orderMainOpt === "cancelMyOrder" ? 5 : 2;;
                     if (address) {
                         dataObj['description'] = `${complainData.orderData.orderData.increment_id} - Updated Address: ${address}`;
                     } else {
@@ -217,52 +214,9 @@ export class OrderDetails extends PureComponent {
                 }
             }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             if (orderMainOpt === "incompleteOrder") {
                 dataObj = {};
+                // 82000632682
                 if (orderSubOpt === "Complete item is missing") {
                     dataObj['email'] = `${customer.data.email}`;
                     dataObj['subject'] = `Complete missing item, ${complainData.orderData.orderData.increment_id} `;
@@ -297,11 +251,13 @@ export class OrderDetails extends PureComponent {
                     let data = JSON.stringify(dataObj)
                     this.submitFreshDeskTicket(data);
                     return
-                } else if (orderSubOpt === "Shirt missing") {
+                }
+                if (orderSubOpt === "Shirt missing") {
                     dataObj['email'] = `${customer.data.email}`;
                     dataObj['subject'] = `Shirt missing, ${complainData.orderData.orderData.increment_id} `;
                     dataObj['group_id'] = 82000622276;
                     dataObj['type'] = 'Missing Item';
+                    
                     dataObj['priority'] = 3;
                     dataObj['status'] = 2;
                     if (address) {
@@ -329,7 +285,8 @@ export class OrderDetails extends PureComponent {
                     let data = JSON.stringify(dataObj)
                     this.submitFreshDeskTicket(data);
                     return
-                } else if (orderSubOpt === "Dupatta missing") {
+                }
+                if (orderSubOpt === "Dupatta missing") {
                     dataObj['email'] = `${customer.data.email}`;
                     dataObj['subject'] = `Dupatta missing, ${complainData.orderData.orderData.increment_id} `;
                     dataObj['group_id'] = 82000622276;
@@ -361,7 +318,8 @@ export class OrderDetails extends PureComponent {
                     let data = JSON.stringify(dataObj)
                     this.submitFreshDeskTicket(data);
                     return
-                } else if (orderSubOpt === "Shalwar missing") {
+                }
+                if (orderSubOpt === "Shalwar missing") {
                     dataObj['email'] = `${customer.data.email}`;
                     dataObj['subject'] = `Shalwar missing, ${complainData.orderData.orderData.increment_id} `;
                     dataObj['group_id'] = 82000622276;
@@ -409,15 +367,7 @@ export class OrderDetails extends PureComponent {
                 this.submitFreshDeskTicket(data);
                 return
             }
-            // complainData.orderData.subOption === "Complete item is missing"
-            // if(orderMainOpt === "changeMyOrder"){
-            //     subject = "Change My Order";
-            // }
-            // if(orderMainOpt === "incompleteOrder"){
-            //     subject = `${orderMainOpt},${complainData.orderData.orderId}`
-            // }
         }
-
 
         // if(orderSubOpt){
         //     if(orderSubOpt === "wrongOrderAddress"){
@@ -685,12 +635,14 @@ export class OrderDetails extends PureComponent {
         const oorderId = complainData.orderData.orderId;
 
         return (
-            <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
-                <h3 className="pageTitle spaceBtm30">{detailData.title}</h3>
+            <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
+                <h3 className="pageTitle">{detailData.title}</h3>
                 <h4 className="orderDeliverySec">{detailData.deliveryDetail}</h4>
-                <p className="secMsg">{detailData.msg}</p>
-                {/* <div className="detaileTrackingHeading">Detailed Tracking</div> */}
-                <div className="detaileTrackingHeading">Detailed Tracking</div>
+                {detailData.deliveryDetail2 && <h4 className="orderDeliverySec">{detailData.deliveryDetail2}</h4>}
+                {/* <p className="secMsg">{detailData.msg}</p> */}
+                <h4 className="orderDeliverySec">{detailData.msg}</h4>
+                {/* <div className="detaileTrackingHeading">Tracking Details</div> */}
+                <div className="detaileTrackingHeading">Tracking Details</div>
                 <OrderStatusStepper
                     TrackingDetail={TrackingDetail}
                     orderid={oorderId}
@@ -717,13 +669,18 @@ export class OrderDetails extends PureComponent {
         // console.log('complainData.orderData.subOption', complainData);
         if (complainData.orderData.subOption && complainData.orderData.subOption === "itemFaster" || complainData.orderData.subOption && complainData.orderData.subOption === "wrongOrderAddress") {
             return (
-                <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
+                <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
                     <h3 className="pageTitle">{detailData.title}</h3>
+                    {detailData?.subTitle && <h4 className="pageSubTitle" style={{fontSize: '20px'}}>{detailData.subTitle}</h4>}
                     <h4 className="orderDeliverySec">{detailData.deliveryDetail}</h4>
-                    {!detailData.courierMsg && <div className="spacer"></div>}
-                    {detailData.courierMsg && <p>{detailData.courierMsg}</p>}
-                    <p className="secMsg">{detailData.msg}</p>
-                    {detailData.detailTracking && <div className="detaileTrackingHeading">Detailed Tracking</div>}
+                    {/* {!detailData.courierMsg && <div className="spacer"></div>} */}
+                    {/* {detailData.courierMsg && <h4 className="orderDeliverySec">{detailData.courierMsg}</h4>} */}
+                    {/* {!detailData.courierMsg && <div className="spacer"></div>} */}
+                    {/* <h4 className="orderDeliverySec">{detailData.msg}</p> */}
+                    {detailData.msg && <h4 className="orderDeliverySec">{detailData.msg}</h4>}
+                    {detailData?.msg2 && <h4 className="orderDeliverySec">{detailData?.msg2}</h4>}
+                    
+                    {detailData.detailTracking && <div className="detaileTrackingHeading">Tracking Details</div>}
                     {detailData.detailTracking && <OrderStatusStepper
                         TrackingDetail={TrackingDetail}
                         orderid={oorderId}
@@ -745,7 +702,7 @@ export class OrderDetails extends PureComponent {
                             {!fieldValid && <div><p className="errorMsg">{errorMsg}</p></div>}
                         </>
                     }
-                    {detailData.submit && <button type="text" onClick={this.handleFormSubmission} className="submitBtnDetail">Submit</button>}
+                    {detailData.submit === true && <button type="text" onClick={() => this.handleFormSubmission(detailData.status === 2 ? 2 : 5, detailData?.group)} className="submitBtnDetail">Submit</button>}
                 </div>
             )
         }
@@ -753,14 +710,15 @@ export class OrderDetails extends PureComponent {
 
             console.log("detailssssssssssssssssssssssssssssssData.......................", detailData);
             return (
-                <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
+                <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
                     <h3 className="pageTitle">{detailData.title}</h3>
-                    {!detailData.subMsg && <div className="spacer10"></div>}
-                    {/* {detailData.subMsg && <p className="subMsg">{detailData.subMsg}</p>} */}
-                    {detailData.subMsg && <p className="orderDeliverySec mgBt10">{detailData.subMsg}</p>}
-                    {detailData.showNote && <p className="noteHead">NOTE</p>}
                     <h4 className="orderDeliverySec mgBt10">{detailData.deliveryDetail}</h4>
-                    <h4 className="orderDeliverySec mgBt10">{detailData.msg}</h4>
+                    {!detailData.subMsg && <div className="spacer10"></div>}
+                    {detailData.subMsg && <h4 className="orderDeliverySec mgBt10">{detailData.subMsg}</h4>}
+                    {/* {detailData.subMsg && <p className="subMsg">{detailData.subMsg}</p>} */}
+                    {detailData.showNote && <p className="noteHead">NOTE</p>}
+                    <h4 className="orderDeliverySec mgBt10">{detailData?.msg}</h4>
+                    {detailData?.msg2 && <h4 className="orderDeliverySec mgBt10">{detailData?.msg2}</h4>}
                     {/* <h4 className="secMsg">{detailData.msg}</h4> */}
                     <div className="spacer10"></div>
                     {detailData.submit && <button type="text" onClick={showConfirmPopup} className="submitBtnDetail">Cancel My Order</button>}
@@ -770,16 +728,20 @@ export class OrderDetails extends PureComponent {
         // check 1
         if (complainData.orderData.subOption && complainData.orderData.subOption === "cheaperOrder") {
             return (
-                <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
+                <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
                     <h3 className="pageTitle">{detailData.title}</h3>
                     {!detailData.submit && <div className="spacer"></div>}
                     {detailData.submit && <div className="spacer10"></div>}
-                    <h4 className="orderDeliverySec mgBt10">{detailData.deliveryDetail}</h4>
-                    {!detailData.submit && <div className="spacer"></div>}
-                    {detailData.msg && <p className="secMsg">{detailData.msg}</p>}
+                    <h4 className="orderDeliverySec">{detailData.deliveryDetail}</h4>
+                    {/* {!detailData.submit && <div className="spacer"></div>} */}
+                    {/* {detailData.msg && <p className="secMsg">{detailData.msg}</p>} */}
+                    {detailData.msg && <h4 className="orderDeliverySec">{detailData.msg}</h4>}
                     {detailData.showNoteSec && <div className="detaileTrackingHeading">Note</div>}
                     {/* {detailData.showNoteSec && <p className="noteContent">{detailData.noteMsg}</p>} */}
-                    {detailData.showNoteSec && <p className="secMsg">{detailData.noteMsg}</p>}
+                    {/* {detailData.showNoteSec && <p className="secMsg">{detailData.noteMsg}</p>} */}
+                    {detailData.showNoteSec && <h4 className="orderDeliverySec">{detailData.noteMsg}</h4>}
+                    {detailData?.noteMsg2 && <h4 className="orderDeliverySec">{detailData?.noteMsg2}</h4>}
+                    {detailData?.noteMsg3 && <h4 className="orderDeliverySec">{detailData?.noteMsg3}</h4>}
                     {detailData.submit && <button type="text" onClick={showConfirmPopup} className="submitBtnDetail">Cancel My Order</button>}
                 </div>
             )
@@ -787,18 +749,21 @@ export class OrderDetails extends PureComponent {
 
         if (complainData.orderData.subOption && complainData.orderData.subOption === "fabricQuality") {
             return (
-                <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
+                <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
                     <h3 className="pageTitle">{detailData.title}</h3>
                     {!detailData.submit && <div className="spacer"></div>}
                     {detailData.submit && <div className="spacer10"></div>}
                     <h4 className="orderDeliverySec mgBt10">{detailData.deliveryDetail}</h4>
-                    {!detailData.submit && <div className="spacer"></div>}
+                    {/* {!detailData.submit && <div className="spacer"></div>} */}
                     {detailData.showNoteSec && <div className="detaileTrackingHeading">Note</div>}
-                    {detailData.showNoteSec && <p className="noteContent">{detailData.noteMsg}</p>}
+                    {/* {detailData.showNoteSec && <p className="noteContent">{detailData.noteMsg}</p>} */}
+                    {detailData.showNoteSec && <h4 className="orderDeliverySec">{detailData.noteMsg}</h4>}
+                    {detailData?.noteMsg2 && <h4 className="orderDeliverySec">{detailData?.noteMsg2}</h4>}
+                    {detailData?.noteMsg3 && <h4 className="orderDeliverySec">{detailData?.noteMsg3}</h4>}
                     {
-                        detailData.submit && 
-                            <button type="text" onClick={showConfirmPopup} className="submitBtnDetail">Cancel My Order</button>
-                        
+                        detailData.submit &&
+                        <button type="text" onClick={showConfirmPopup} className="submitBtnDetail">Cancel My Order</button>
+
                     }
                 </div>
             )
@@ -818,7 +783,7 @@ export class OrderDetails extends PureComponent {
         // console.log('complainData.orderData.subOption', complainData);
         // if(complainData.orderData.subOption && complainData.orderData.subOption === "Complete item is missing"){
         return (
-            <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
+            <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
                 <h3 className="pageTitle">{detailData.title}</h3>
                 <h4 className="orderDeliverySec">{detailData.deliveryDetail}</h4>
                 {!detailData.courierMsg && <div className="spacer"></div>}
@@ -869,7 +834,7 @@ export class OrderDetails extends PureComponent {
         // this.handleFormSubmission();
 
         return (
-            <div class="detail-section" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
+            <div class="detail-section" style={{ height: document?.getElementsByClassName("centered")[0]?.clientHeight < screen.height ? screen.height : '' }}>
                 <h4 className="successMsg">{detailData.title}</h4>
                 <button type="text" onClick={() => this.renderTicketGenerate()} className="submitBtnDetail">Close</button>
             </div>
@@ -920,14 +885,20 @@ export class OrderDetails extends PureComponent {
     renderConfirmPopup = () => {
         return <ExchangeFromStorePopup title="Are you sure?" handlePopupConfirm={this.handlePopupConfirm} />
     }
-    customeHeight = null
-    changeHeightHandler = () => {
-        const divHeight = document.getElementsByClassName("centered")[0].clientHeight
-        const screenHeight = screen.height;
-        if(divHeight < screenHeight){
-            this.customeHeight = screenHeight
-        }
-    }
+    // customeHeight = null
+    // componentDidUpdate = () => {
+    //     try {
+    //         const divHeight = document.getElementsByClassName("centered")[0]?.clientHeight
+    //         const screenHeight = screen.height;
+    //         if(divHeight < screenHeight){
+    //             this.customeHeight = screenHeight
+    //         }
+
+    //     } catch (error) {
+    //         console.log('from componentDidUpdate', error);
+    //     }
+    // }
+
 
     render() {
         //  const { isLoading, location, complainData, TrackingDetail, packet_list } = this.props;
@@ -948,8 +919,8 @@ export class OrderDetails extends PureComponent {
         console.log('Rerander ....... from order details');
         return (
             <>
-                <div className="centered" style={{height: this.customeHeight !== null ? this.customeHeight : ''}}>
-                    {this.changeHeightHandler()}
+                <div className="centered" style={{ height: screen.height }}>
+                    {/* {this.changeHeightHandler()} */}
                     {this.renderContent()}
                     {this.renderConfirmPopup()}
                     {/* {detailData.title && <h3 className="pageTitle">{detailData.title}</h3>}
@@ -962,7 +933,7 @@ export class OrderDetails extends PureComponent {
                     {detailData.detailsTracking && <p className="subContent">You can see the detailed tracking below</p>}
                     {detailData.textAreaHeading && <p className="inputHeading">{detailData.textAreaHeading}</p>}
                     {detailData.textArea && <div><textarea className="textAreaSec"></textarea></div>}
-                    {detailData.detailsTracking && <div className="detaileTrackingHeading">{DateFormatter.formatDate((new Date(complainData.orderData.orderData.estimated_delivery.replace(/ /g,"T"))),'DDDD, DD MMM hh:mm A')} Detailed Tracking</div>}
+                    {detailData.detailsTracking && <div className="detaileTrackingHeading">{DateFormatter.formatDate((new Date(complainData.orderData.orderData.estimated_delivery.replace(/ /g,"T"))),'DDDD, DD MMM hh:mm A')} Tracking Details</div>}
                     {detailData.detailsTracking && <OrderStatusStepper
                             TrackingDetail={TrackingDetail}
                             orderid={oorderId}

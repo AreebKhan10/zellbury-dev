@@ -82,9 +82,9 @@ export class ExchangeOptions extends PureComponent {
 
             let subject;
             if (productOption.subOption) {
-                subject = `I recieved wrong product - ${productOption?.mainOption} - ${productOption.subOption} - ${complainData.locationData.getOrderById.base_order_info.increment_id}`;
+                subject = `${productOption.mainOption} - ${productOption.subOption} - ${complainData.locationData.getOrderById.base_order_info.increment_id}`;
             } else {
-                subject = `I recieved wrong product - ${productOption?.mainOption} - ${complainData.locationData.getOrderById.base_order_info.increment_id}`;
+                subject = `${productOption.mainOption} - ${complainData.locationData.getOrderById.base_order_info.increment_id}`;
             }
 
             console.log("order id .........................", complainData.barcodeData.data.validateBarcode.order[0].order_id);
@@ -92,9 +92,6 @@ export class ExchangeOptions extends PureComponent {
             console.log("imgFile .........................", imgFile);
 
             const promise1 = new Promise((resolve, reject) => {
-                let tagsArr = [`${complainData?.barcodeData?.data?.validateBarcode?.order[0]?.source_name}`, `${complainData?.barcodeData?.data?.validateBarcode?.order[0]?.city}`]
-                let arr = JSON.stringify(`${tagsArr}`)
-                console.log("json array of tags.....", arr, tagsArr);
                 // myHeaders.append("Authorization", "Basic aGhsYXNxR1NZZDdSVVJzV2p4dWU6eGE=");
                 myHeaders.append("Authorization", "Basic aGY2MWJqQkdOU1lsNndRZzA5Uzp4");
                 myHeaders.append("Cookie", "_x_w=2");
@@ -104,11 +101,8 @@ export class ExchangeOptions extends PureComponent {
                 formdata.append("email", `${customer.data.email}`);
                 formdata.append("subject", `${subject}`);
                 formdata.append("description", `${description}`);
-                formdata.append("status", ticketType === 'Exchange from store' ? 5 : 2);
+                formdata.append("status", 5);
                 formdata.append("priority", 1);
-                for (var i = 0; i < tagsArr.length; i++) {
-                    formdata.append("tags[]", tagsArr[i]);
-                }
                 formdata.append("group_id", 82000622276),
                     formdata.append("unique_external_id", `"${customer.data.email}"`),
                     formdata.append("source", 101),
@@ -154,7 +148,7 @@ export class ExchangeOptions extends PureComponent {
                 formdata.append("group_id", 82000622276);
                 formdata.append("type", "Product Related");
                 formdata.append("priority", 1);
-                formdata.append("status", ticketType === 'Exchange from store' ? 5 : 2);
+                formdata.append("status", 5);
                 formdata.append("description", `${description}`);
                 formdata.append("phone_no", `${phoneNum}`);
                 formdata.append("attachments", (imageForRMA.split(','))[1]);
@@ -169,7 +163,7 @@ export class ExchangeOptions extends PureComponent {
                 };
 
 
-                fetch("https://zellbury.com/posttickets/index", requestOptions)
+                fetch("https://dev.zellbury.com/posttickets/index", requestOptions)
                     .then(response => response.text())
                     .then(result => {
                         console.log(result)
@@ -264,26 +258,19 @@ export class ExchangeOptions extends PureComponent {
                     }
                     dataObj = {};
                     dataObj['email'] = `${customer.data.email}`;
-                    {
-                        complainData?.productOption?.mainOption
-                            ? dataObj["subject"] = `I recieved wrong product - ${complainData?.productOption?.mainOption} - ${complainData.locationData.orderData.orderData.increment_id} `
-                            : dataObj["subject"] = `I recieved wrong product - ${complainData.locationData.orderData.orderData.increment_id} `
-                    }
+                    dataObj['subject'] = `I recieved wrong product - ${complainData.productOption.mainOption} - ${complainData.locationData.orderData.orderData.increment_id} `;
                     dataObj["custom_fields"] = custom_fields_data;
                     dataObj['group_id'] = 82000622276;
                     dataObj['type'] = 'Product Related';
                     dataObj['priority'] = 1;
-                    dataObj['status'] = ticketType == "Exchange from store" || ticketType == 'exchangeFromStore' ? 5 : 2;
+                    dataObj['status'] = 5;
                     dataObj["unique_external_id"] = `${customer.data.email}`;
                     dataObj["source"] = 101;
-                    dataObj["tags"] = [`${complainData?.barcodeData?.data?.validateBarcode?.order[0]?.source_name}`, `${complainData?.barcodeData?.data?.validateBarcode?.order[0]?.city}`];
-                    // formdata.append("tags[]", `["101", "${complainData?.barcodeData?.data?.validateBarcode?.order[0]?.source_name}", "${complainData?.barcodeData?.data?.validateBarcode?.order[0]?.city}"]`);
-
-                    dataObj["name"] = `${customer.data.firstname} `;
-                    dataObj["email"] = `${customer.data.email} `;
-                    dataObj["phone"] = `${phoneNum} `;
-                    // dataObj['description'] = `${ complainData.locationData.orderData.orderData.increment_id } `;
-                    dataObj['description'] = `${description} `;
+                    dataObj["name"] = `${customer.data.firstname}`;
+                    dataObj["email"] = `${customer.data.email}`;
+                    dataObj["phone"] = `${phoneNum}`;
+                    // dataObj['description'] = `${complainData.locationData.orderData.orderData.increment_id}`;
+                    dataObj['description'] = `${description}`;
                 }
             }
 
@@ -314,30 +301,24 @@ export class ExchangeOptions extends PureComponent {
 
                     })
                     .catch(function (error) {
-                        console.log("error https://newaccount1631100479992.freshdesk.com/api/v2/tickets ...", error);
-                        reject(error)
+                        console.log(error);
+                        reject('error')
                     });
 
             })
             const promise2 = new Promise((resolve, reject) => {
-                
-
                 var myHeaders = new Headers();
                 myHeaders.append("Cookie", "PHPSESSID=be96asun6001nkudanb2dl1rto; mage-messages=%5B%7B%22type%22%3A%22error%22%2C%22text%22%3A%22Invalid+Form+Key.+Please+refresh+the+page.%22%7D%5D; private_content_version=f987fe585bbce372dfbc085506aef231");
-                console.log('');
+
                 var formdata = new FormData();
-                formdata.append("email", `${customer.data.email} `);
-                {
-                    complainData?.productOption?.mainOption
-                    ? formdata.append("subject", `I recieved wrong product - ${complainData?.productOption?.mainOption} - ${complainData.locationData.orderData.orderData.increment_id} `)
-                    : formdata.append("subject", `I recieved wrong product - ${complainData.locationData.orderData.orderData.increment_id} `)
-                }
+                formdata.append("email", `${customer.data.email}`);
+                formdata.append("subject", `I recieved wrong product - ${complainData.productOption.mainOption} - ${complainData.locationData.orderData.orderData.increment_id} `);
                 formdata.append("group_id", 82000622276);
                 formdata.append("type", "Product Related");
                 formdata.append("priority", 1);
                 formdata.append("status", 5);
-                formdata.append("description", `${description} `);
-                formdata.append("phone_no", `${phoneNum} `);
+                formdata.append("description", `${description}`);
+                formdata.append("phone_no", `${phoneNum}`);
                 // formdata.append("attachments", imgFile);
                 formdata.append("cf_barcode", complainData.barcode);
                 formdata.append("cf_resolution", resolution);
@@ -348,18 +329,19 @@ export class ExchangeOptions extends PureComponent {
                     body: formdata,
                     redirect: 'follow'
                 };
-                
+
+
                 fetch("https://dev.zellbury.com/posttickets/index", requestOptions)
-                .then(response => response.text())
+                    .then(response => response.text())
                     .then(result => {
                         console.log(result)
                         resolve('ok')
                         // showNotification('success', __("Ticket Submitted Successfully..........second api"));
                     })
                     .catch(error => {
-                        console.log('error https://zellbury.com/posttickets/index', error)
+                        console.log('error', error)
                         // showNotification('error', __("Invalid Data through promise all"));
-                        reject(error)
+                        reject('error')
                     });
             })
 
@@ -369,11 +351,10 @@ export class ExchangeOptions extends PureComponent {
                     var myHeaders = new Headers();
                     myHeaders.append("Content-Type", "application/json");
                     myHeaders.append("Cookie", "PHPSESSID=5382a5r1ihsjjtgit3ob6kgdq5; private_content_version=f85cf59eeec8dd114413330c8c8b1562");
-
+                    
                     console.log("if condition true", complainData.barcodeData.data.validateBarcode.order[0].order_id);
                     var graphql = JSON.stringify({
-                        query: `{
-                \r\n  returnShipment(orderId: \"${complainData.barcodeData.data.validateBarcode.order[0].order_id}\") {\r\n    response{\r\n        msg\r\n        status\r\n    }\r\n  }\r\n}\r\n `,
+                        query: `{\r\n  returnShipment(orderId:\"${complainData.barcodeData.data.validateBarcode.order[0].order_id}\") {\r\n    response{\r\n        msg\r\n        status\r\n    }\r\n  }\r\n}\r\n `,
                         variables: {}
                     })
                     var requestOptions = {
@@ -391,8 +372,8 @@ export class ExchangeOptions extends PureComponent {
                             resolve('ok')
                         })
                         .catch(error => {
-                            console.log('error https://dev.zellbury.com/graphql', error)
-                            reject(error)
+                            console.log('error', error)
+                            reject('error')
                         });
                 } else {
                     resolve('ok')
@@ -406,7 +387,6 @@ export class ExchangeOptions extends PureComponent {
                 history.push('/ordercomplain/delivered-orders/store-list');
                 countForTicket--
             }).catch(errors => {
-                console.log('error from submiting ticket......', errors);
                 showNotification('error', __("Invalid Data through promise all"));
                 countForTicket--
             })
@@ -430,20 +410,18 @@ export class ExchangeOptions extends PureComponent {
         history.push('/ordercomplain/delivered-orders/store-list');
     }
 
-
     renderConfirmPopup = () => {
         return <ExchangeFromStorePopup title="Please confirm so we can share your details with our Store Mangement" handlePopupConfirm={this.handlePopupConfirm} />
     }
 
-    handlePickupCredit = async () => {
-        const { location, complainData, updateComplain, setHeaderState } = this.props;
+    handlePickupCredit = () => {
+        const { location, complainData, updateComplain } = this.props;
         const data = {
             myData: complainData,
         }
         if (complainData && complainData.dataImg) {
             // this.submitTicketWithImage('Pickup');
         }
-        // setHeaderState({ name: 'order-complain', title: 'Complain form', onBackClick: () => history.goBack() });
         updateComplain(data);
         history.push('/ordercomplain/delivered-orders/pickup-credit', data);
         // history.push('/ordercomplain/delivered-orders/store-list');
@@ -452,16 +430,14 @@ export class ExchangeOptions extends PureComponent {
     renderContent = () => {
         const { isLoading, showConfirmPopup, complainData, showExchangeOption, customerName } = this.props;
         console.log("showExchangeOption", showExchangeOption);
-        console.log("complainData", complainData?.productOption?.mainOption);
+        console.log("complainData", complainData);
         return (
             <>
-                <h3 className="headingTitle">Your order is {complainData?.locationData?.getOrderById?.base_order_info?.status_label}</h3>
+                <h3 className="headingTitle">Your order is {complainData.locationData.getOrderById.base_order_info.status_label}</h3>
                 {/* <h3 className="headingTitle">What would you like help with</h3> */}
                 <div className="orderOptCenteredSec">
-                    <h4 className="exchangeSubHeading">{customerName}, {complainData?.productOption?.mainOption === 'Fabric is very light'
-                        || complainData?.productOption?.mainOption === 'Fabric is too thick'
-                        ? 'How you would like us to help.'
-                        : 'It seems we made a mistake! How you would like us to help.'}</h4>
+                    <h4 className="exchangeSubHeading">{customerName}, It seems we made a mistake!
+                        How would you like us to help</h4>
                     {showExchangeOption &&
                         <div className="buttonsSec" block="OrderStatusComplain" elem="Buttons">
                             <button

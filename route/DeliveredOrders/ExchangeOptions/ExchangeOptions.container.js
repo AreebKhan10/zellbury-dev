@@ -64,6 +64,7 @@ import { showPopup } from 'Store/Popup/Popup.action';
     state = {
         showExchangeOption: true,
     }
+    
 
     checkStore = async () => {
         const customerData = JSON.parse(localStorage.getItem("customer"));
@@ -85,6 +86,7 @@ import { showPopup } from 'Store/Popup/Popup.action';
         this.checkStore();
     }
 
+    
     showConfirmPopup() {
         const { showPopup } = this.props;
         showPopup({

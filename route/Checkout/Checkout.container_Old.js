@@ -363,8 +363,8 @@ export class CheckoutContainer extends PureComponent {
                                     }
                                     const { data } = JSON.parse(sourceData)
 
-                                    if (!data.getIdentifiedSources) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                    if (!data.getIdentifiedSources && customer?.data?.city !== null) {
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             isLoading: false
                                         });
@@ -376,8 +376,10 @@ export class CheckoutContainer extends PureComponent {
                                         requestsSent: requestsSent + 1,
                                     });
                                     const cloneAddress = { ...address }
-                                    const sourcesCount = [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))].length;
+                                    console.log( data?.getIdentifiedSources?.sourcename , "<---- data?.getIdentifiedSources?.sourcename ")
+                                    const sourcesCount = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))].length : 0;
                                     cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                    
                                     fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                         cloneAddress,
                                         data.getIdentifiedSources.items,
@@ -387,11 +389,12 @@ export class CheckoutContainer extends PureComponent {
                                     )).then(
                                         ({ estimateShippingCosts: shippingMethods }) => {
                                             const { requestsSent } = this.state;
+                                            const sourceName = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))] : [];
 
                                             this.setState({
                                                 isLoading: false,
                                                 sourcesCount,
-                                                sourcesName: [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))],
+                                                sourcesName: sourceName,
                                                 shippingMethods,
                                                 isDeliveryOptionsLoading: requestsSent > 1,
                                                 requestsSent: requestsSent - 1,
@@ -431,7 +434,7 @@ export class CheckoutContainer extends PureComponent {
                                     const { data } = JSON.parse(sourceData);
 
                                     if (!data.getSourceList) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             locationEnable: false,
                                             isLoading: false
@@ -446,26 +449,25 @@ export class CheckoutContainer extends PureComponent {
                                     });
 
                                     const cloneAddress = { ...address }
-
-                                    const sourcesCount = [...new Set(JSON.parse(data.getSourceList.sourcename))].length;
-
+                                    const sourcesCount = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))].length : 0;
                                     cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                    const Items = data.getSourceList.items ? data.getSourceList.items : []
 
                                     fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                         cloneAddress,
-                                        data.getSourceList.items,
+                                        Items,
                                         data.getSourceList.samecity,
                                         data.getSourceList.zex_toggle,
                                         this._getGuestCartId()
                                     )).then(
                                         ({ estimateShippingCosts: shippingMethods }) => {
                                             const { requestsSent } = this.state;
-
+                                            const sourceName = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))] : [];
                                             this.setState({
                                                 isLoading: false,
                                                 sourcesCount,
                                                 dropdown: data?.getSourceList?.dropdown,
-                                                sourcesName: [...new Set(JSON.parse(data.getSourceList.sourcename))],
+                                                sourcesName: sourceName,
                                                 shippingMethods,
                                                 isDeliveryOptionsLoading: requestsSent > 1,
                                                 requestsSent: requestsSent - 1,
@@ -511,7 +513,7 @@ export class CheckoutContainer extends PureComponent {
 
                                         if (!data.getSourceList) {
 
-                                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                                            showErrorNotification(__('This Item Is Out of Stock!'));
                                             this.setState({
                                                 locationEnable: false,
                                                 isLoading: false
@@ -527,13 +529,15 @@ export class CheckoutContainer extends PureComponent {
 
                                         const cloneAddress = { ...address }
 
-                                        const sourcesCount = [...new Set(JSON.parse(data.getSourceList.sourcename))].length;
+                                        
+                                        const sourcesCount = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))].length : 0;
 
                                         cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                        const Items = data.getSourceList.items ? data.getSourceList.items : []
 
                                         fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                             cloneAddress,
-                                            data.getSourceList.items,
+                                            Items,
                                             data.getSourceList.samecity,
                                             data.getSourceList.zex_toggle,
                                             this._getGuestCartId()
@@ -541,11 +545,13 @@ export class CheckoutContainer extends PureComponent {
                                             ({ estimateShippingCosts: shippingMethods }) => {
 
                                                 const { requestsSent } = this.state;
+                                                const sourceName = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))] : [];
+
                                                 this.setState({
                                                     isLoading: false,
                                                     sourcesCount,
                                                     dropdown: data?.getSourceList?.dropdown,
-                                                    sourcesName: [...new Set(JSON.parse(data.getSourceList.sourcename))],
+                                                    sourcesName: sourceName,
                                                     shippingMethods,
                                                     isDeliveryOptionsLoading: requestsSent > 1,
                                                     requestsSent: requestsSent - 1,
@@ -588,7 +594,7 @@ export class CheckoutContainer extends PureComponent {
                                         const { data } = JSON.parse(sourceData)
 
                                         if (!data.getIdentifiedSources) {
-                                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                                            showErrorNotification(__('This Item Is Out of Stock!'));
                                             this.setState({
                                                 isLoading: false
                                             });
@@ -600,22 +606,27 @@ export class CheckoutContainer extends PureComponent {
                                             requestsSent: requestsSent + 1,
                                         });
                                         const cloneAddress = { ...address }
-                                        const sourcesCount = [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))].length;
+                                     
+                                        const sourcesCount = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))].length : 0;
+
                                         cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                        const Items = data.getIdentifiedSources.items ? data.getIdentifiedSources.items : []
+
                                         fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                             cloneAddress,
-                                            data.getIdentifiedSources.items,
+                                            Items,
                                             data.getIdentifiedSources.samecity,
                                             data.getIdentifiedSources.zex_toggle,
                                             this._getGuestCartId()
                                         )).then(
                                             ({ estimateShippingCosts: shippingMethods }) => {
                                                 const { requestsSent } = this.state;
+                                                const sourceName = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))] : [];
 
                                                 this.setState({
                                                     isLoading: false,
                                                     sourcesCount,
-                                                    sourcesName: [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))],
+                                                    sourcesName: sourceName,
                                                     shippingMethods,
                                                     isDeliveryOptionsLoading: requestsSent > 1,
                                                     requestsSent: requestsSent - 1,
@@ -656,7 +667,7 @@ export class CheckoutContainer extends PureComponent {
                                         const { data } = JSON.parse(sourceData);
 
                                         if (!data.getSourceList) {
-                                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                                            showErrorNotification(__('This Item Is Out of Stock!'));
                                             this.setState({
                                                 locationEnable: false,
                                                 isLoading: false
@@ -672,25 +683,28 @@ export class CheckoutContainer extends PureComponent {
 
                                         const cloneAddress = { ...address }
 
-                                        const sourcesCount = [...new Set(JSON.parse(data.getSourceList.sourcename))].length;
+                          
+                                        const sourcesCount = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))].length : 0;
 
                                         cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                        const Items = data.getSourceList.items ? data.getSourceList.items : []
+
 
                                         fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                             cloneAddress,
-                                            data.getSourceList.items,
+                                            Items,
                                             data.getSourceList.samecity,
                                             data.getSourceList.zex_toggle,
                                             this._getGuestCartId()
                                         )).then(
                                             ({ estimateShippingCosts: shippingMethods }) => {
                                                 const { requestsSent } = this.state;
-
+                                                const sourceName = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))] : [];
                                                 this.setState({
                                                     isLoading: false,
                                                     sourcesCount,
                                                     dropdown: data?.getSourceList?.dropdown,
-                                                    sourcesName: [...new Set(JSON.parse(data.getSourceList.sourcename))],
+                                                    sourcesName: sourceName,
                                                     shippingMethods,
                                                     isDeliveryOptionsLoading: requestsSent > 1,
                                                     requestsSent: requestsSent - 1,
@@ -740,7 +754,7 @@ export class CheckoutContainer extends PureComponent {
                                     const { data } = JSON.parse(sourceData)
 
                                     if (!data.getIdentifiedSources) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             isLoading: false
                                         });
@@ -752,22 +766,27 @@ export class CheckoutContainer extends PureComponent {
                                         requestsSent: requestsSent + 1,
                                     });
                                     const cloneAddress = { ...address }
-                                    const sourcesCount = [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))].length;
+                              
+                                    const sourcesCount = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))].length : 0;
+
                                     cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                    const Items = data.getSourceList.items ? data.getSourceList.items : []
+
                                     fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                         cloneAddress,
-                                        data.getIdentifiedSources.items,
+                                        Items,
                                         data.getIdentifiedSources.samecity,
                                         data.getIdentifiedSources.zex_toggle,
                                         this._getGuestCartId()
                                     )).then(
                                         ({ estimateShippingCosts: shippingMethods }) => {
                                             const { requestsSent } = this.state;
+                                            const sourceName = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))] : [];
 
                                             this.setState({
                                                 isLoading: false,
                                                 sourcesCount,
-                                                sourcesName: [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))],
+                                                sourcesName: sourceName,
                                                 shippingMethods,
                                                 isDeliveryOptionsLoading: requestsSent > 1,
                                                 requestsSent: requestsSent - 1,
@@ -798,7 +817,7 @@ export class CheckoutContainer extends PureComponent {
                                     }
                                     const { data } = JSON.parse(sourceData);
                                     if (!data.getSourceList) {
-                                        // showErrorNotification(__('This Item Is Out of Stock!'));
+                                        showErrorNotification(__('This Item Is Out of Stock!'));
                                         this.setState({
                                             locationEnable: false,
                                             isLoading: false
@@ -811,22 +830,27 @@ export class CheckoutContainer extends PureComponent {
                                         requestsSent: requestsSent + 1,
                                     });
                                     const cloneAddress = { ...address }
-                                    const sourcesCount = [...new Set(JSON.parse(data.getSourceList.sourcename))].length;
+                                   
+                                    const sourcesCount = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))].length : 0;
+
                                     cloneAddress.city = address.city ? address.city : customer?.data?.city
+                                    const Items = data.getSourceList.items ? data.getSourceList.items : []
                                     fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                                         cloneAddress,
-                                        data.getSourceList.items,
+                                        Items,
                                         data.getSourceList.samecity,
                                         data.getSourceList.zex_toggle,
                                         this._getGuestCartId()
                                     )).then(
                                         ({ estimateShippingCosts: shippingMethods }) => {
                                             const { requestsSent } = this.state;
+                                            const sourceName = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))] : [];
+
                                             this.setState({
                                                 isLoading: false,
                                                 sourcesCount,
                                                 dropdown: data?.getSourceList?.dropdown,
-                                                sourcesName: [...new Set(JSON.parse(data.getSourceList.sourcename))],
+                                                sourcesName:sourceName,
                                                 shippingMethods,
                                                 isDeliveryOptionsLoading: requestsSent > 1,
                                                 requestsSent: requestsSent - 1,
@@ -871,7 +895,7 @@ export class CheckoutContainer extends PureComponent {
                         const { data } = JSON.parse(sourceData)
 
                         if (!data.getIdentifiedSources) {
-                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                            showErrorNotification(__('This Item Is Out of Stock!'));
                             this.setState({
                                 isLoading: false
                             });
@@ -883,22 +907,26 @@ export class CheckoutContainer extends PureComponent {
                             requestsSent: requestsSent + 1,
                         });
                         const cloneAddress = { ...address }
-                        const sourcesCount = [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))].length;
+                        const sourcesCount = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))].length : 0;
+                        
                         cloneAddress.city = address.city ? address.city : customer?.data?.city
+                        const Items = data.getIdentifiedSources.items ? data.getIdentifiedSources.items : []
+
                         fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                             cloneAddress,
-                            data.getIdentifiedSources.items,
+                            Items,
                             data.getIdentifiedSources.samecity,
                             data.getIdentifiedSources.zex_toggle,
                             this._getGuestCartId()
                         )).then(
                             ({ estimateShippingCosts: shippingMethods }) => {
                                 const { requestsSent } = this.state;
+                                const sourceName = data?.getIdentifiedSources?.sourcename  ? [...new Set(JSON.parse(data?.getIdentifiedSources?.sourcename))] : [];
 
                                 this.setState({
                                     isLoading: false,
                                     sourcesCount,
-                                    sourcesName: [...new Set(JSON.parse(data.getIdentifiedSources.sourcename))],
+                                    sourcesName: sourceName,
                                     shippingMethods,
                                     isDeliveryOptionsLoading: requestsSent > 1,
                                     requestsSent: requestsSent - 1,
@@ -929,7 +957,7 @@ export class CheckoutContainer extends PureComponent {
                         }
                         const { data } = JSON.parse(sourceData);
                         if (!data.getSourceList) {
-                            // showErrorNotification(__('This Item Is Out of Stock!'));
+                            showErrorNotification(__('This Item Is Out of Stock!'));
                             this.setState({
                                 locationEnable: false,
                                 isLoading: false
@@ -942,22 +970,27 @@ export class CheckoutContainer extends PureComponent {
                             requestsSent: requestsSent + 1,
                         });
                         const cloneAddress = { ...address }
-                        const sourcesCount = [...new Set(JSON.parse(data.getSourceList.sourcename))].length;
+                        const sourcesCount = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))].length : 0;
+
                         cloneAddress.city = address.city ? address.city : customer?.data?.city
+                        const Items = data.getIdentifiedSources.items ? data.getIdentifiedSources.items : []
+
                         fetchMutation(CheckoutQuery.getEstimateShippingCosts(
                             cloneAddress,
-                            data.getSourceList.items,
+                            Items,
                             data.getSourceList.samecity,
                             data.getSourceList.zex_toggle,
                             this._getGuestCartId()
                         )).then(
                             ({ estimateShippingCosts: shippingMethods }) => {
                                 const { requestsSent } = this.state;
+                                const sourceName = data?.getSourceList?.sourcename  ? [...new Set(JSON.parse(data?.getSourceList?.sourcename))] : [];
+
                                 this.setState({
                                     isLoading: false,
                                     sourcesCount,
                                     dropdown: data?.getSourceList?.dropdown,
-                                    sourcesName: [...new Set(JSON.parse(data.getSourceList.sourcename))],
+                                    sourcesName: sourceName,
                                     shippingMethods,
                                     isDeliveryOptionsLoading: requestsSent > 1,
                                     requestsSent: requestsSent - 1,
@@ -1172,7 +1205,7 @@ export class CheckoutContainer extends PureComponent {
             const mapOrderId = orderId.map((id) => parseInt(id))
             const { data } = JSON.parse(localStorage.getItem("auth_token"))
             const partialOrderResponse = await _getPartialOrder(JSON.stringify(mapOrderId), data)
-            const items = JSON.parse(partialOrderResponse)?.data?.getPartialOrderById?.items
+            const items =  JSON.parse(partialOrderResponse)?.data?.getPartialOrderById?.items 
             items.forEach(getOrderById => {
                 this.requestTrackingDetails(getOrderById.base_order_info.increment_id);
 
@@ -1321,26 +1354,12 @@ export class CheckoutContainer extends PureComponent {
             isLoading: true,
             shippingAddress: shipping_address
         });
-        let customerjson = localStorage.getItem("customer")
-        customerjson = JSON.parse(customerjson)
 
         if (!isSignedIn()) {
             if (!await this.createUserOrSaveGuest()) {
                 this.setState({ isLoading: false });
                 return;
             }
-        }
-        if(customerjson.data.firstname === "" || customerjson.data.firstname === "Name" || customerjson.data.city === "" || customerjson.data.city === null || customerjson.data.city === undefined || customerjson.data.firstname === " " || customerjson.data.firstname === undefined){
-
-            const mutation = MyAccountQuery.getUpdateInformationMutation({firstname:shipping_address.firstname,city:shipping_address.city});
-            this.setState({ isLoading: true });
-    
-             fetchMutation(mutation).then(
-                ({ updateCustomer: { customer } }) => {
-                    BrowserDatabase.setItem(customer, CUSTOMER, ONE_MONTH_IN_SECONDS);
-                },
-                this._handleError
-            );
         }
 
         fetchMutation(CheckoutQuery.getSaveAddressInformation(

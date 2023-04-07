@@ -72,6 +72,7 @@ export class MyAccountQuery {
     }
 
     getUpdateInformationMutation(options) {
+        console.log(">----getUpdateInformationMutation")
         return new Field('updateCustomer')
             .addArgument('input', 'CustomerInput!', options)
             .addField(this._getCustomerField());
@@ -107,6 +108,8 @@ export class MyAccountQuery {
 
     getCreateAccountMutation(options) {
         const { customer, password } = options;
+        console.log(">----getCreateAccountMutation")
+
 
         return new Field('createCustomer')
             .addArgument('input', 'CustomerInput!', { ...customer, password })

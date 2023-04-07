@@ -210,7 +210,7 @@ export class MyAccountAddressForm extends FieldForm {
         let fullName = '';
         if (isSignedIn()) {
             const customer = BrowserDatabase.getItem('customer') || {};
-            fullName = customer.firstname === " " ? '' : customer.firstname  ;
+            fullName = customer.firstname;
         }
 
         return {

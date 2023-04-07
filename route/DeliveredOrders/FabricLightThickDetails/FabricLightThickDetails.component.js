@@ -42,9 +42,19 @@ export class FabricLightThickDetails extends PureComponent {
     // }
 
     
+
     
     contactSupportHandler = (dataContactSupport) => {
-        
+        const {complainData, updateComplain, productOption,  } = this.props;
+        // const { imageUrl } = this.state;
+        let data = {
+            barcodeData: complainData.barcodeData,
+            locationData: complainData.locationData,
+            barcode: complainData.barcode,
+            // dataImg: imageUrl,
+            productOption: productOption
+        }
+        updateComplain(data);
         history.push('/ordercomplain/delivered-orders/exchange-order', dataContactSupport)
     }
 

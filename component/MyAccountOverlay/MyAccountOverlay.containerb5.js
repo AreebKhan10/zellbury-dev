@@ -17,7 +17,6 @@ import { connect } from 'react-redux';
 
 import { CUSTOMER_ACCOUNT, CUSTOMER_SUB_ACCOUNT } from 'Component/Header/Header.config';
 import { CHECKOUT_URL } from 'Route/Checkout/Checkout.config';
-import MyAccountQuery from 'Query/MyAccount.query';
 import { changeNavigationState, goToPreviousNavigationState } from 'Store/Navigation/Navigation.action';
 import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
 import { showNotification } from 'Store/Notification/Notification.action';
@@ -42,10 +41,6 @@ import {
     deleteAuthorizationToken
 } from 'Util/Auth';
 import BrowserDatabase from 'Util/BrowserDatabase';
-import { prepareQuery } from 'Util/Query';
-import { fetchQuery, executePost, fetchMutation } from 'Util/Request';
-
-
 
 export const MyAccountDispatcher = import(
     /* webpackMode: "lazy", webpackChunkName: "dispatchers" */
@@ -155,8 +150,6 @@ export class MyAccountOverlayContainer extends PureComponent {
         this.state = this.redirectOrGetState(props);
     }
     componentDidMount() {
-       
-
         String.prototype.splice = function (idx, rem, str) {
             return this.slice(0, idx) + str + this.slice(idx + Math.abs(rem));
         };
@@ -556,23 +549,8 @@ export class MyAccountOverlayContainer extends PureComponent {
             isLoading: true
         });
         otp(fields).then((response) => {
-
             if (response.verifyCustomerOtp.response == 'success' && response.verifyCustomerOtp.status == true) {
                 console.log("RESPONCE OTP--->>>", response )
-
-            setAuthorizationToken(response.verifyCustomerOtp.token);
-              const query = MyAccountQuery.getCustomerQuery();
-                 executePost(prepareQuery([query])).then(
-                ({ customer }) => {
-                    console.log("maqsoodcust",customer)
-                    //dispatch(updateCustomerDetails(customer));
-                    BrowserDatabase.setItem(customer, 'customer', 2628000);
-                },
-                (error) => {
-                    console.log("maqsderr",error)
-                });
-
-
                 if (response.verifyCustomerOtp.new_user == false) {
                     setAuthorizationToken(response.verifyCustomerOtp.token);
                     if (cartTotals) {
@@ -616,7 +594,6 @@ export class MyAccountOverlayContainer extends PureComponent {
                     //this.setState({ isLoading: false });
                 } else {
                     setAuthorizationToken(response.verifyCustomerOtp.token);
-                    
                     //localStorage.setItem('user_token', response.verifyCustomerOtp.token);
                     this.setState({ state: STATE_CREATE_ACCOUNT, isLoading: false });
                 }

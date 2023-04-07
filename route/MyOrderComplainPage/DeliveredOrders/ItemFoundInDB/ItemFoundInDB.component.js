@@ -88,7 +88,7 @@ export class ItemFoundInDB extends Component {
                                 {__('Chest')}
                             </button>
                         </div>
-
+                        
                         <div className="buttonsSec" block="OrderStatusComplain" elem="Buttons">
                             <button
                                 className="optionsBtn"
@@ -277,17 +277,13 @@ export class ItemFoundInDB extends Component {
 
         if (productOption.mainOption && productOption.mainOption === 'Fabric is very light') {
             return <FabricLightThickDetails
-                productOption={productOption}
                 checkCondition="Fabric is very light"
                 collection={this.props?.complainData?.barcodeData?.data?.validateBarcode?.product[0]?.collection}
                 fabric={this.props?.complainData?.barcodeData?.data?.validateBarcode?.product[0]?.fabric}
             />
         }
         if (productOption.mainOption && productOption.mainOption === 'Fabric is too thick') {
-            return <FabricLightThickDetails
-                checkCondition="Fabric is too thick"
-                productOption={productOption}
-            />
+            return <FabricLightThickDetails checkCondition="Fabric is too thick" />
         }
 
         if (productOption.mainOption && productOption.mainOption != 'Item doesnt fit me') {

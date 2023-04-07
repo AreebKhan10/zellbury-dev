@@ -15,6 +15,7 @@ import { connect } from 'react-redux';
 
 import { CUSTOMER_ACCOUNT, CUSTOMER_ACCOUNT_PAGE } from 'Component/Header/Header.config';
 import { updateMeta } from 'Store/Meta/Meta.action';
+import { isSignedIn } from '../../util/Auth/Token';
 import { changeNavigationState } from 'Store/Navigation/Navigation.action';
 import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
 import { toggleOverlayByKey } from 'Store/Overlay/Overlay.action';
@@ -181,7 +182,24 @@ export class MyAccountContainer extends PureComponent {
         }
     }
 
+    componentDidUpdate(){
+        let element = document.querySelector(".NavigationTabs") 
+        console.log(isSignedIn(),element, "<----MAKSOOD")
+        if(element ){
+            if(window.location.pathname == "/my-account"  && window.innerWidth <=767 && !isSignedIn()){
+                element.style.display = "none"
+            }else{
+                element.style.display = "block"
+            }
+        }
+    }
+
     onSignOut() {
+        console.log("sIGNOUT wORKING")
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
         const { toggleOverlayByKey } = this.props;
         this.setState({ activeTab: DASHBOARD });
         this.setState({ state: STATE_SIGN_IN });
@@ -189,6 +207,11 @@ export class MyAccountContainer extends PureComponent {
     }
 
     onSignIn() {
+        console.log("modal working")
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
         const {
             requestCustomerData,
             changeHeaderState,

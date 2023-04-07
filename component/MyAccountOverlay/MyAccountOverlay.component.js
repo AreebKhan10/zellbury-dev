@@ -21,6 +21,7 @@ import Form from 'Component/Form';
 import Loader from 'Component/Loader';
 import Overlay from 'Component/Overlay';
 import isMobile from 'Util/Mobile';
+import { isSignedIn } from '../../util/Auth/Token';
 
 import { GoogleLogin } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
@@ -498,6 +499,7 @@ export class MyAccountOverlay extends PureComponent {
             </>
         );
     }
+
     renderCreateAccount() {
         const {
             state,
@@ -782,6 +784,10 @@ export class MyAccountOverlay extends PureComponent {
             onSignInByNumberAttempt
         } = this.props;
         const { isLoaded, telephone } = this.state;
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
         return (
             <>
 

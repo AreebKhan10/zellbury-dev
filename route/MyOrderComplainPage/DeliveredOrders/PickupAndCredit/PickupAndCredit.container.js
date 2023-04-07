@@ -20,8 +20,6 @@ import { customerType } from 'Type/Account';
 import { showPopup } from 'Store/Popup/Popup.action';
 import PickupAndCredit from './PickupAndCredit.component';
 import { showNotification } from 'Store/Notification/Notification.action';
-import { changeNavigationState, goToPreviousNavigationState } from 'Store/Navigation/Navigation.action';
-import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
 
  export const OrderDispatcher = import(
      /* webpackMode: "lazy", webpackChunkName: "dispatchers" */
@@ -36,8 +34,7 @@ import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
  export const mapDispatchToProps = (dispatch) => ({
     showPopup: (payload) => dispatch(showPopup(CONFIRM_POPUP_ID, payload)),
     hidePopup: () => dispatch(showPopup('', {})),
-    showNotification: (type, message) => dispatch(showNotification(type, message)),
-    setHeaderState: (headerState) => dispatch(changeNavigationState(TOP_NAVIGATION_TYPE, headerState)),
+    showNotification: (type, message) => dispatch(showNotification(type, message))
 });
  
  export class PickupAndCreditContainer extends PureComponent {
@@ -47,8 +44,7 @@ import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
      static propTypes = {
         showPopup: PropTypes.func.isRequired,
         hidePopup: PropTypes.func.isRequired,
-        customer: customerType.isRequired,
-        setHeaderState: PropTypes.func.isRequired,
+        customer: customerType.isRequired
     };
 
     containerFunctions = {

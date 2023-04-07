@@ -69,7 +69,6 @@ export class MyAccountCustomerPopupContainer extends PureComponent {
             hideActiveOverlay,
             goToPreviousHeaderState
         } = this.props;
-
         const mutation = MyAccountQuery.getUpdateInformationMutation(customer);
         this.setState({ isLoading: true });
 
@@ -85,6 +84,7 @@ export class MyAccountCustomerPopupContainer extends PureComponent {
             this.onError
         );
     }
+    
 
     onPasswordChange(passwords) {
         const {

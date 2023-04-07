@@ -84,23 +84,29 @@ export class HomePageContainer extends PureComponent {
     //     }
     // }
 
+   
     componentDidMount(){
-        let CategoryType = localStorage.getItem("CategoryType");
+        
+        // let auth_token = localStorage.getItem("auth_token");
+        // let customer = localStorage.getItem("customer");
+        // if(auth_token && !customer){
+        //     history.push('/my-account/dashboard');
+        // }else{
 
-        console.log(CategoryType,"<--- HOME UPDATE")
-
-        if(!CategoryType){
-            localStorage.setItem("PageType", "home")
-            history.push(`/`)
-        }
-
-        if(CategoryType === "women-new" ){
-            history.push(`women-new`)
-        }
-
-        if(CategoryType === "men-new" ){
-            history.push(`men-new`)
-        }
+            let CategoryType = localStorage.getItem("CategoryType");
+            if(!CategoryType){
+                localStorage.setItem("PageType", "home")
+                history.push(`/`)
+            }
+    
+            if(CategoryType === "women-new" ){
+                history.push(`women-new`)
+            }
+    
+            if(CategoryType === "men-new" ){
+                history.push(`men-new`)
+            }
+        // }
     }
     
     componentDidUpdate() {
@@ -109,6 +115,10 @@ export class HomePageContainer extends PureComponent {
         const { changeHeaderState, getOrderList } = this.props;
         let CategoryType = localStorage.getItem("CategoryType");
         console.log(CategoryType, "<----- CategoryType in home")
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
         
         // if(CategoryType){
         //     console.log("Home 147")

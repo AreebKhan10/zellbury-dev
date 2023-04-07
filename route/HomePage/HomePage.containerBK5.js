@@ -9,7 +9,7 @@
  * @link https://github.com/scandipwa/base-theme
  */
 
-import './WomenNew.style';
+import './HomePage.style';
 
 import PropTypes from 'prop-types';
 import { PureComponent } from 'react';
@@ -21,8 +21,7 @@ import { DEFAULT_STATE_NAME } from 'Component/NavigationAbstract/NavigationAbstr
 import CmsPage from 'Route/CmsPage';
 import { changeNavigationState } from 'Store/Navigation/Navigation.action';
 import { TOP_NAVIGATION_TYPE } from 'Store/Navigation/Navigation.reducer';
-import WomenCards  from 'Component/WomenCards';
-import WomenSlider  from 'Component/WomenSlider';
+
 import BrowserDatabase from 'Util/BrowserDatabase';
 import React from 'react';
 import MyAccountOrderTableRow from 'Component/MyAccountOrderTableRow';
@@ -54,7 +53,7 @@ export const mapDispatchToProps = (dispatch) => ({
     )
 });
 
-export class WomenNewContainer extends PureComponent {
+export class HomePageContainer extends PureComponent {
     static propTypes = {
         changeHeaderState: PropTypes.func.isRequired,
         getOrderList: PropTypes.func.isRequired
@@ -85,46 +84,51 @@ export class WomenNewContainer extends PureComponent {
     //     }
     // }
 
-    
-
-    
-    
-    componentDidMount() {
-        // let auth_token = localStorage.getItem("auth_token");
-        // let customer = localStorage.getItem("customer");
-        // if(auth_token && !customer){
-        //     history.push('/my-account/dashboard');
-        // }
-        let element = document.querySelector(".NavigationTabs") 
-        if(element){
-            element.style.display = "block"
-        }
-        console.log("test component")
-        localStorage.setItem("PageType", "Women")
-        localStorage.setItem("CategoryType", "women-new");
-
-        const { changeHeaderState, getOrderList } = this.props;
-        console.log("Im Herer")
+    componentDidMount(){
         let CategoryType = localStorage.getItem("CategoryType");
 
-        console.log(changeHeaderState, "<---- changeHeaderState")
+        console.log(CategoryType,"<--- HOME UPDATE")
 
+        if(!CategoryType){
+            localStorage.setItem("PageType", "home")
+            history.push(`/`)
+        }
+
+        if(CategoryType === "women-new" ){
+            history.push(`women-new`)
+        }
+
+        if(CategoryType === "men-new" ){
+            history.push(`men-new`)
+        }
 
         
-        // if(CategoryType){
 
-        //     if(CategoryType === "men"  || CategoryType === "Women" || CategoryType === "women"){
-                
-        //         console.log("Home 147")
-            
+
+    }
+    
+    componentDidUpdate() {
+      
+        
+        const { changeHeaderState, getOrderList } = this.props;
+        let CategoryType = localStorage.getItem("CategoryType");
+        console.log(CategoryType, "<----- CategoryType in home")
+        
+        // if(CategoryType){
+        //     console.log("Home 147")
+
+        //     if(CategoryType === "men-new"  || CategoryType === "Women-new" || CategoryType === "women-new"){
+        //        console.log(CategoryType, "<------CategoryType inside")
+               
         //         history.push(`${CategoryType.toLowerCase()}`)
         //         return
         //     }else{
-        //         localStorage.setItem("CategoryType", "women");
-        //         history.push(`women`)
+        //         localStorage.setItem("CategoryType", "women-new");
+        //         history.push(`women-new`)
         //         return
         //     }
         // }else{
+        //     console.log("Home")
         //     history.push("/")
         // }
 
@@ -156,7 +160,7 @@ export class WomenNewContainer extends PureComponent {
         // if (customer?.data?.addresses[customer?.data.addresses.length - 1].city) { this.getMessagesHandler(customer?.data?.addresses[customer?.data?.addresses?.length - 1]?.city) }
         // else if (customer?.data?.addresses[1]?.city) { this.getMessagesHandler(customer?.data?.addresses[1]?.city) }
         // else { this.getMessagesHandler("") }
-            console.log(DEFAULT_STATE_NAME, "<----DEFAULT_STATE_NAME")
+
         changeHeaderState({
             name: DEFAULT_STATE_NAME,
             isHiddenOnMobile: true
@@ -252,21 +256,20 @@ export class WomenNewContainer extends PureComponent {
     // ===========================================================================================
     render() {
         return (
-            <div block="womenPage">
+            <div block="HomePage">
                 <HeaderMessage/>
+                
                 {/* <TextCarousel /> */}
                 {/* <div style={{ width: '100%', padding: '20px', backgroundColor: '#CC0066', justifyContent: 'center', alignItems: 'center' }}>
                     <p>Due to Heavy Rain, Order Deliveries might get affected in Several Cities.</p>
                 </div> */}
                 <InstallPrompt />
-                <WomenSlider />
                 <CmsPage {...this.props} />
                 {isSignedIn() && this.renderBottomStepper()}
-                <WomenCards />
                 <Footer isVisibleOnMobile />
             </div>
         );
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WomenNewContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageContainer);

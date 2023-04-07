@@ -89,6 +89,16 @@ export class MenNewContainer extends PureComponent {
     
     
     componentDidMount() {
+        // let auth_token = localStorage.getItem("auth_token");
+        // let customer = localStorage.getItem("customer");
+        // if(auth_token && !customer){
+        //     history.push('/my-account/dashboard');
+        // }
+        let element = document.querySelector(".NavigationTabs") 
+        if(element){
+            element.style.display = "block"
+        }
+
       
         console.log("test component")
         localStorage.setItem("PageType", "men")

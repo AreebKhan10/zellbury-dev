@@ -239,7 +239,7 @@ export class ProductActions extends PureComponent {
                 <div block="ProductActions" elem="DeliveryEstimates">
                     {showEstimates &&
                         <div>
-                            <labe>Order before 2pm, </labe><labe block="ProductActions" elem="EstimatedTime">get it by {dayName}</labe><labe> in {city ? city : ""}</labe>
+                            <labe>Order before 2pm, </labe><labe block="ProductActions" elem="EstimatedTime">get it by {dayName}</labe><labe> in {city}</labe>
                         </div>
                     }
                     {!showEstimates && <a block="CheckoutSuccess" elem="OtpResendBtn" onClick={getDeliveryEstimate} title="Get delivery estimates" >{__('Get delivery estimates')}</a>}
