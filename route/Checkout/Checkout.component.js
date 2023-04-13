@@ -1352,7 +1352,7 @@ export class Checkout extends PureComponent {
                             >
                                 <div block="Checkout" elem="Step">
                                     {this.renderTitle()}
-                                    {this.renderGuestForm()}
+                                    {/* {this.renderGuestForm()} */}
                                     {this.renderStep()}
                                     {this.renderLoader()}
                                 </div>

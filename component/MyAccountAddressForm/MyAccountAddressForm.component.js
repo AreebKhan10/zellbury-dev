@@ -155,15 +155,13 @@ export class MyAccountAddressForm extends FieldForm {
         };
     }
 
+   
     getMobileFields() {
         const { countryId } = this.state;
+       
         let localMobile = localStorage.getItem('phone')
-        let mobile = '';
-        if (localMobile && localMobile.length>3) {
-            mobile = localMobile.slice(3);
-        }
-        this.state.mobile = mobile;
-        if (countryId == 'PK') {
+         console.log(localMobile, "<----localMobile")
+        if (countryId == 'PK' && localMobile) {
             return {
                 telephone: {
                     tabindex:'3',
@@ -172,7 +170,7 @@ export class MyAccountAddressForm extends FieldForm {
                     label: __('Mobile number'),
                     placeholder: __('Mobile number'),
                     validation: ['telephonePk'],
-                    value: mobile,
+                    value: localMobile.slice(3)
                     
                 }
             };
@@ -181,7 +179,7 @@ export class MyAccountAddressForm extends FieldForm {
         return {
             telephone: {
                 tabindex:'3',
-                value: mobile,
+                value: localMobile ?  localMobile.slice(3) : "",
                 type: 'tel',
                 autocomplete:"false",
                 label: __('Mobile number'),

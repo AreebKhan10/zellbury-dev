@@ -160,6 +160,7 @@ export class CheckoutAddressBook extends PureComponent {
     renderContent() {
         
         const { isSignedIn ,customer: { addresses } } = this.props;
+        console.log(isSignedIn, "<----isSignedIn CHECKOUTADDRESS")
         if (isSignedIn && addresses && addresses.length) {
             return this.renderSignedInContent();
         }
